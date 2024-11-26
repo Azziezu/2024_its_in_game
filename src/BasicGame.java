@@ -16,6 +16,20 @@ public class BasicGame implements GameLoop {
     @Override
     public void init() { // Voert eenmalig dingen uit aan het begin van het spel
 
+      SaxionApp.printLine(spelernaam);
+
+
+
+    }
+
+
+    // Slaat invoer van de spelernaam op
+    public static String spelernaam;
+    public String voerSperlernaam() {
+        SaxionApp.printLine(" Voer je naam: ");
+        String spelernaam = SaxionApp.readString();
+        return spelernaam;
+
     }
 
     @Override
