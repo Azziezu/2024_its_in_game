@@ -6,7 +6,7 @@ import nl.saxion.app.interaction.MouseEvent;
 
 public class BasicGame implements GameLoop {    // Gameloop geeft je 4 methodes
 
-    int x,y;        // Roep de int aan
+    int x,y,z;        // Roep de int aan
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 1000, 1000, 40);
@@ -16,7 +16,7 @@ public class BasicGame implements GameLoop {    // Gameloop geeft je 4 methodes
     public void init() {
         x = 500;
         y = 500;
-        int z = 30;
+        z = 30;
     }
 
     @Override
