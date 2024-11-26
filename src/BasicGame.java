@@ -17,7 +17,6 @@ public class BasicGame implements GameLoop {    // Gameloop geeft je 4 methodes
         x = 500;
         y = 500;
         z = 30;
-        int B = 40;
     }
 
     @Override
