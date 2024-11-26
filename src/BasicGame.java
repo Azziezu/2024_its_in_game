@@ -4,38 +4,35 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
-public class BasicGame implements GameLoop {    // Gameloop geeft je 4 methodes
+public class BasicGame implements GameLoop {
 
-    int x,y,z;        // Roep de int aan
+    int x, y; // Muiscoördinaten
+    String raadwoord = "Capybara";
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 1000, 1000, 40);
     }
 
     @Override
-    public void init() {
-        x = 500;
-        y = 500;
-        z = 30;
-    }
-
-    @Override
-    public void loop() {
-        SaxionApp.clear(); // Verwijderd voorgaande circle zodat het de muis volgt
-        SaxionApp.drawCircle(x, y,100);
+    public void init() { // Voert eenmalig dingen uit aan het begin van het spel
 
     }
 
     @Override
-    public void keyboardEvent(KeyboardEvent keyboardEvent) {
-        if (keyboardEvent.getKeyCode() == keyboardEvent.VK_SPACE){
-            SaxionApp.setFill(SaxionApp.getRandomColor());
+    public void loop() {  // Blijft dingen herhalen gedurende het spel
+        SaxionApp.clear();
 
+    }
+
+    @Override
+    public void keyboardEvent(KeyboardEvent keyboardEvent) { // Herkent invoer op toetsenbord
+        if (keyboardEvent.isKeyPressed()) {
+            // if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {}
         }
     }
 
     @Override
-    public void mouseEvent(MouseEvent mouseEvent) {
+    public void mouseEvent(MouseEvent mouseEvent) { // Herkent invoer op muis
         x = mouseEvent.getX();
         y = mouseEvent.getY();
     }
