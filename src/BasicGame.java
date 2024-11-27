@@ -15,10 +15,7 @@ public class BasicGame implements GameLoop {
 
     @Override
     public void init() { // Voert eenmalig dingen uit aan het begin van het spel
-
       SaxionApp.printLine(spelernaam);
-
-
 
     }
 
@@ -35,6 +32,8 @@ public class BasicGame implements GameLoop {
     @Override
     public void loop() {  // Blijft dingen herhalen gedurende het spel
         SaxionApp.clear();
+        SaxionApp.drawText("Voer een letter in: ", 5, 5, 16);
+
 
     }
 
@@ -50,6 +49,7 @@ public class BasicGame implements GameLoop {
         x = mouseEvent.getX();
         y = mouseEvent.getY();
     }
+
 }
 
 
