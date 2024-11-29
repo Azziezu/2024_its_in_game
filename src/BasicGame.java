@@ -1,4 +1,3 @@
-import nl.saxion.app.CsvReader;
 import nl.saxion.app.SaxionApp;
 
 import nl.saxion.app.interaction.GameLoop;
@@ -57,7 +56,7 @@ public class BasicGame implements GameLoop {
     }
 
     @Override
-    public void keyboardEvent(KeyboardEvent keyboardEvent) { // Herkent invoer op toetsenbord
+    public void keyboardEvent(KeyboardEvent keyboardEvent) { // Van startscherm naar het spel
         if (keyboardEvent.isKeyPressed()) {
             switch (gameState) {
                 case STARTSCREEN:
