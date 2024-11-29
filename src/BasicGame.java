@@ -4,10 +4,6 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class BasicGame implements GameLoop {
 
     static final int STARTSCREEN = 1;
@@ -17,24 +13,18 @@ public class BasicGame implements GameLoop {
     int x, y; // Muiscoördinaten
     String raadwoord = "Capybara";
     String name = "";
-
+    String geradenLetters = "";
     int gameState;
-
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 1000, 1000, 40);
     }
-
-
-
-
 
     @Override
     public void init() { // Voert eenmalig dingen uit aan het begin van het spel
         raadwoord = "Capybara";
         gameState = STARTSCREEN;
         // SaxionApp.printLine(spelernaam);
-        readFranseWoorden();
     }
 
     // Slaat invoer van de spelernaam op
@@ -61,7 +51,7 @@ public class BasicGame implements GameLoop {
                 break;
         }
         voerSperlernaam();
-
+        letterInvoeren();
     }
 
     @Override
@@ -82,26 +72,38 @@ public class BasicGame implements GameLoop {
                 default:
                     break;
             }
-            // if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {}
-            boolean inputChar = keyboardEvent.isKeyPressed();
-            //onthoud de ingedrukte word
-            char letter = (char)keyboardEvent.getKeyCode();
-            //kijkt of er een letter word ingevoerd
-            boolean isLetter = Character.isLetter(letter);
-            // controleert of er een letter of een spatie word ingevoerd.
-            if (isLetter || letter == ' ' ){
-                // zet de letters in kleine letters
-                letter = Character.toLowerCase(letter);
-                name = name + letter;
 
+            // Read letter input for guessing
+            boolean inputChar = keyboardEvent.isKeyPressed();   // Waarde van key die ingevoerd word door gebruiker word opgeslagen in inputChar
+            char letterRaden = (char) keyboardEvent.getKeyCode(); // Keycode is een numerieke waarde die wordt ingevoerd, met name van (char) word dit omgezet in een letter
+            boolean isLetterRaden = Character.isLetter(letterRaden);    // Controleert of letterraden een letter meekrijgt van de gebruikers, anders geeft dit false
 
-
+            if (inputChar) {
+                SaxionApp.drawText("Je hebt de letter ingevoerd " + letterRaden, 200, 300, 24); // Geeft door welke letter is ingevoerd door speler
+            } else {
+                SaxionApp.drawText("Voer alsjeblieft maar 1 letter in!", 300, 200, 24);
             }
 
 
+
+            // Onthoud het ingedrukte woord
+            char letter = (char) keyboardEvent.getKeyCode();
+            // Kijkt of er een letter word ingevoerd
+            boolean isLetter = Character.isLetter(letter);
+            // Controleert of er een letter of een spatie word ingevoerd.
+            if (isLetter || letter == ' ') {
+                // Zet de letters in kleine letters
+                letter = Character.toLowerCase(letter);
+                name = name + letter;
+
+            }
         }
     }
 
+    public void letterInvoeren(){
+        SaxionApp.drawText("Voer een letter in: ", 150, 150, 24);
+        SaxionApp.drawText(geradenLetters, 200, 200, 24);
+    }
 
     @Override
     public void mouseEvent(MouseEvent mouseEvent) { // Herkent invoer op muis
@@ -109,57 +111,18 @@ public class BasicGame implements GameLoop {
         y = mouseEvent.getY();
     }
 
-    public void drawStartScreen() {
+    public void drawStartScreen() { // Start scherm
         SaxionApp.drawText("Laat het hoofd niet rollen!", 20, 20, 24);
         SaxionApp.drawText("Druk op spatie om het spel te starten", 20, 60, 24);
     }
 
-    public void drawGameScreen() {
-        SaxionApp.drawText("Voer een letter in: ", 5, 5, 16);
+    public void drawGameScreen() {  // Actief game scherm
+        SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
     }
 
-    public void drawEndScreen() {
-        //
-    }
-
-    public void readFranseWoorden() {
-
-        String file = "Resources\\Franse woorden.csv";
-        BufferedReader reader = null;
-        String line = "";
-
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            while ((line = reader.readLine()) != null) {
-                String[] row = line.split(",");
-
-                for (String index : row) {
-                    System.out.printf("-%10s", index);
-                }
-                System.out.println();
-            }
-
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+    public void drawEndScreen() {   // Eind scherm
+        SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
+        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
     }
 
 }
-
-
-
-
-
-
-
-
-
