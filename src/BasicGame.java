@@ -12,7 +12,8 @@ public class BasicGame implements GameLoop {
     static final int ENDSCREEN = 3;
 
     int x, y; // Muiscoördinaten
-    String raadwoord;
+    String raadwoord = "Capybara";
+    String name= "";
     int gameState;
 
 
@@ -28,11 +29,10 @@ public class BasicGame implements GameLoop {
     }
 
     // Slaat invoer van de spelernaam op
-    public static String spelernaam;
-    public String voerSperlernaam() {
-        SaxionApp.printLine(" Voer je naam: ");
-        String spelernaam = SaxionApp.readString();
-        return spelernaam;
+    public void voerSperlernaam() {
+        SaxionApp.drawText(" Voer je naam: ", 100, 100, 20);
+        SaxionApp.drawText(name, 100, 200, 30);
+
     }
 
     @Override
@@ -51,6 +51,8 @@ public class BasicGame implements GameLoop {
             default:
                 break;
         }
+        voerSperlernaam();
+
     }
 
     @Override
@@ -71,8 +73,14 @@ public class BasicGame implements GameLoop {
                 default:
                     break;
             }
+            // if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {}
+            boolean inputChar = keyboardEvent.isKeyPressed();
+
+            name = name + "a";
+
         }
     }
+
 
     @Override
     public void mouseEvent(MouseEvent mouseEvent) { // Herkent invoer op muis
