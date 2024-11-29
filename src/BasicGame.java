@@ -5,6 +5,10 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class BasicGame implements GameLoop {
 
     static final int STARTSCREEN = 1;
@@ -20,11 +24,16 @@ public class BasicGame implements GameLoop {
         SaxionApp.startGameLoop(new BasicGame(), 1000, 1000, 40);
     }
 
+
+
+
+
     @Override
     public void init() { // Voert eenmalig dingen uit aan het begin van het spel
         raadwoord = "Capybara";
         gameState = STARTSCREEN;
         // SaxionApp.printLine(spelernaam);
+        readFranseWoorden();
     }
 
     // Slaat invoer van de spelernaam op
@@ -93,7 +102,41 @@ public class BasicGame implements GameLoop {
         //
     }
 
+    public void readFranseWoorden() {
+
+        String file = "Resources\\Franse woorden.csv";
+        BufferedReader reader = null;
+        String line = "";
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+
+                for (String index : row) {
+                    System.out.printf("-%10s", index);
+                }
+                System.out.println();
+            }
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
 }
+
+
+
 
 
 
