@@ -16,7 +16,8 @@ public class BasicGame implements GameLoop {
 
     int x, y; // Muiscoördinaten
     String raadwoord = "Capybara";
-    String name= "";
+    String name = "";
+
     int gameState;
 
 
@@ -83,8 +84,20 @@ public class BasicGame implements GameLoop {
             }
             // if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {}
             boolean inputChar = keyboardEvent.isKeyPressed();
+            //onthoud de ingedrukte word
+            char letter = (char)keyboardEvent.getKeyCode();
+            //kijkt of er een letter word ingevoerd
+            boolean isLetter = Character.isLetter(letter);
+            // controleert of er een letter of een spatie word ingevoerd.
+            if (isLetter || letter == ' ' ){
+                // zet de letters in kleine letters
+                letter = Character.toLowerCase(letter);
+                name = name + letter;
 
-            name = name + "a";
+
+
+            }
+
 
         }
     }
