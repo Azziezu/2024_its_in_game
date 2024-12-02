@@ -18,7 +18,9 @@ public class BasicGame implements GameLoop {
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
     String name = "";
-    String geradenLetters = "";
+    ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
+    String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
+    long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
 
@@ -39,7 +41,6 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("HARD", (width / 3 * 2) + 30, height - 180, width / 3 - 60, 60));
 
         buttonsStartScreen.add(new Button("START", 30, height - 90, width - 60, 60));
-        // buttonsStartScreen.add(new Button("LEADERBOARD", width / 2 + 30, height - 90, width / 2 - 60, 60));
     }
 
     // Slaat invoer van de spelernaam op
@@ -68,7 +69,15 @@ public class BasicGame implements GameLoop {
             default:
                 break;
         }
+
+        // Laat een bericht zien met de tijd voor hoe lang het op scherm moet blijven
+        if (!tijdelijkBericht.isEmpty() && System.currentTimeMillis() < berichtTijd) {
+            SaxionApp.drawText(tijdelijkBericht, 300, 50, 25);
+        } else {
+            tijdelijkBericht = ""; // Verwijder bericht als tijd voorbij is
+        }
     }
+
 
     @Override
     public void keyboardEvent(KeyboardEvent keyboardEvent) { // Van startscherm naar het spel
@@ -80,7 +89,6 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case GAMESCREEN:
-                    //
                     break;
                 case ENDSCREEN:
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
@@ -91,36 +99,51 @@ public class BasicGame implements GameLoop {
                     break;
             }
 
-            // Read letter input for guessing
-            boolean inputChar = keyboardEvent.isKeyPressed();   // Waarde van key die ingevoerd word door gebruiker word opgeslagen in inputChar
-            char letterRaden = (char) keyboardEvent.getKeyCode(); // Keycode is een numerieke waarde die wordt ingevoerd, met name van (char) word dit omgezet in een letter
-            boolean isLetterRaden = Character.isLetter(letterRaden);    // Controleert of letterraden een letter meekrijgt van de gebruikers, anders geeft dit false
+            // Deze code wordt alleen uitgevoerd wanneer het gamescherm actief is
+            if (keyboardEvent.isKeyPressed() && currentScreen == GAMESCREEN) {
+                char ingevoerdeLetter = (char) keyboardEvent.getKeyCode();
+                // Als ingevoerde letter een letter is
+                if (Character.isLetter(ingevoerdeLetter)) {
+                    // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
+                    ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
 
-            if (inputChar) {
-                SaxionApp.drawText("Je hebt de letter ingevoerd " + letterRaden, 200, 300, 24); // Geeft door welke letter is ingevoerd door speler
-            } else {
-                SaxionApp.drawText("Voer alsjeblieft maar 1 letter in!", 300, 200, 24);
+                    // Checkt of geraden letter al eerder geraden is met contains
+                    if (geradenLetters.contains(ingevoerdeLetter)) {
+                        toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
+                    } else {
+                        geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
+
+                        // Veranderd char in string omdat contains alleen string herkend
+                        if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
+                            toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                        } else {
+                            toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                        }
+                    }
+                } else {
+                    // Kan alleen een letter invoeren, geen andere tekens of cijfers
+                    toonBericht("Voer alstublieft alleen een letter in.");
+                }
             }
-
-
 
             // Onthoud het ingedrukte woord
             char letter = (char) keyboardEvent.getKeyCode();
-            // Kijkt of er een letter word ingevoerd
             boolean isLetter = Character.isLetter(letter);
-            // Controleert of er een letter of een spatie word ingevoerd.
             if (isLetter || letter == ' ') {
-                // Zet de letters in kleine letters
                 letter = Character.toLowerCase(letter);
                 name = name + letter;
-
             }
         }
     }
 
+    public void toonBericht(String tekst) {
+        tijdelijkBericht = tekst;                           // Tekst
+        berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
+    }
+
     public void letterInvoeren(){
-        SaxionApp.drawText("Voer een letter in: ", 150, 150, 24);
-        SaxionApp.drawText(geradenLetters, 200, 200, 24);
+        SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
+        SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
     }
 
     @Override
@@ -133,10 +156,8 @@ public class BasicGame implements GameLoop {
                     buttonEvent(buttonsStartScreen);
                     break;
                 case GAMESCREEN:
-                    // buttonEventHandler(buttonsGameScreen);
                     break;
                 case ENDSCREEN:
-                    // buttonEventHandler(buttonsEndScreen);
                     break;
                 default:
                     break;
@@ -144,9 +165,9 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public void drawStartScreen() { // Start scherm
+    public void drawStartScreen() {
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
-        SaxionApp.drawText("Druk op START om het spel te starten", 30,  60, 24);
+        SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
         voerSperlernaam();
 
@@ -155,12 +176,12 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public void drawGameScreen() {  // Actief game scherm
+    public void drawGameScreen() {
         SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
         letterInvoeren();
     }
 
-    public void drawEndScreen() {   // Eind scherm
+    public void drawEndScreen() {
         SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
         SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
     }
@@ -194,10 +215,6 @@ public class BasicGame implements GameLoop {
             case "START":
                 currentScreen = GAMESCREEN;
                 break;
-            case "LEADERBOARD":
-                // TODO leaderboard knop
-                // currentScreen = LEADERBOARD;
-                break;
             default:
                 break;
         }
@@ -212,8 +229,7 @@ public class BasicGame implements GameLoop {
         };
     }
 
-    public boolean gameOver() { // TODO methode die checkt of het spel voorbij is (guillotine gevallen of woord geraden)
+    public boolean gameOver() {
         return false;
     }
-
 }
