@@ -6,46 +6,41 @@
 
 # Voortgang
 #### Abdi
-Heeft gewerkt aan het systeem voor het invoeren van de naam voor de speler. 
-Inmiddels kan al wel wat ingevoerd worden alleen moet er nog meer functie
-aan toegevoegd worden. 
+Abdi heeft gewerkt aan invoer van naam. Hij hoopt dit vandaag af te maken. Op dit moment
+Zijn er dubbele letters bij invoer, hij moet ervoor zorgen dat dit niet gebeurt.
 #### Wat ging goed?
-Hij heeft om hulp gevraagd en is verder gekomen. Kan input schrijven op het scherm.
+Invoer is voor elkaar gekregen met behulp van anderen. 
 #### Wat ging niet goed?
-Die input kan hij nog niet doorzetten zodat het systeem dit kan lezen en outputten.
-Hij gaat proberen om hier mee verder te gaan.
+Hij moet proberen om meer uren aan dit vak te besteden. 
 
 #### Azra
-Is bezig geweest met kijken of input toegevoegd kan worden in de code. 
-Dus een letter kiezen. 
+Azra is bezig geweest met een letter kunnen invoeren en ervoor zorgen
+dat alleen een letter ingevoerd kan worden. Dit werkt. Ook heeft Azra 
+functionaliteit toegevoegd om te kijken of het ingevoerde letter
+juist of onjuist is en of dit al eerder is geraden. 
 #### Wat ging goed?
-Kan tekst op het scherm weergeven.
+Invoeren van de letter en de logica achter het onjuiste en juiste letter ging goed.
 #### Wat ging niet goed?
-Kreeg het niet voor elkaar dat de user tekst op het scherm kan schrijven.
-
+Het nam best wel wat tijd in beslag en had er hulp bij nodig.
 
 #### Bart
-Bart is niet aanwezig. Voor wat wij kunnen zien in git heeft hij een stuk code 
-toegevoegd dat ervoor zorgt dat je met spatie van scherm veranderd.
+Bart heeft het startscherm afgemaakt. Het kiezen van de moeilijkheidsgraad en
+de logica achter het kiezen van een scherm. 
 #### Wat ging goed?
-Niet aanwezig dus niet kunnen bespreken.
+Vrijwel alles is wel goed gegaan
 #### Wat ging niet goed?
-Niet aanwezig dus niet kunnen bespreken.
+Hij liep nergens tegen aan
 
 #### Dean
-Heeft het CSV bestand in resource gezet en is bezig om de CSV reader te maken, 
-dat gaat hij proberen.
+Dean is bezig met de CSV reader en dit configureren/toevoegen.
 #### Wat ging goed?
-CSV bestand in resource zetten ging goed. Voor de rest wordt er nog aan het maken van de
-CSV reader gewerkt.
+Het ging vrijwel goed en bestanden zijn toegevoegd aan het systeem.
 #### Wat ging niet goed?
-Alles gaat goed tot nu toe.
+CSV reader was weg dus hij moet hier opnieuw mee bezig. 
 
 # Nieuwe taken
 #### Abdi
-Abdi gaat werken aan het systeem waar je de naam van de speler kunt invoeren. 
-Dit is een functie waarin de speler zijn naam kan invoeren en het systeem dit zal aanhouden.
-(Zelfde taken)
+Gaat verder met het tekenen van de guillotine en de logica hier achter.
 
 #### Azra
 Azra gaat bezig met de invoer voor het raden van het woord. 
@@ -55,13 +50,10 @@ of geraden letters correct of incorrect zijn.
 (Zelfde taken)
 
 #### Bart
-Bart gaat werken aan het startscherm en weergave van het raadwoord.
-Ook zal Bart werken aan het leeg vakje per weergegeven letter.
-Dit is belangrijk voor weergave om te checken of een letter al gekozen is.
-(Zelfde taken)
+Hij gaat nu verder met het weergeven van het
+geraden woord. Op het scherm op basis van de logica van een letter
+invoeren
 
 #### Dean
-Dean maakt het CSV bestand met de CSV reader aan. 
-Hier zal een woordenlijst inkomen en hier gaat Dean ook mee bezig.
-(Zelfde taken)
+Gaat verder met de CSV reader omdat deze weg was.
 
