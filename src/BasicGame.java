@@ -1,3 +1,4 @@
+import nl.saxion.app.CsvReader;
 import nl.saxion.app.SaxionApp;
 
 import nl.saxion.app.interaction.GameLoop;
@@ -35,6 +36,7 @@ public class BasicGame implements GameLoop {
         difficulty = NORMAL;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
+        csvReader();
 
         buttonsStartScreen.add(new Button("EASY", 30, height - 180, width / 3 - 60, 60));
         buttonsStartScreen.add(new Button("NORMAL", width / 3 + 30, height - 180, width / 3 - 60, 60));
@@ -240,4 +242,21 @@ public void naamInvoeren(char letter) {
         return false;
     }
 
+CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
+
+ArrayList<String> woordenlijst = new ArrayList<>();
+    {
+    csvReader();
 }
+
+public void csvReader() {
+    reader.skipRow();
+    reader.setSeparator(',');
+    while (reader.loadRow()) {
+        if (reader.getString(0).equals(difficultyToString())) {
+            woordenlijst.add(reader.getString(1));
+        }
+    }
+}
+}
+
