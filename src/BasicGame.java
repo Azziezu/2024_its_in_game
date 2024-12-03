@@ -78,9 +78,8 @@ public class BasicGame implements GameLoop {
         }
     }
 
-
     @Override
-    public void keyboardEvent(KeyboardEvent keyboardEvent) { // Van startscherm naar het spel
+    public void keyboardEvent(KeyboardEvent keyboardEvent) {
         if (keyboardEvent.isKeyPressed()) {
             switch (currentScreen) {
                 case STARTSCREEN:
@@ -189,7 +188,22 @@ public class BasicGame implements GameLoop {
     public void buttonEvent(ArrayList<Button> buttons) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
-                executeButtonEvent(button);
+                switch (button.label) {
+                    case "EASY":
+                        difficulty = EASY;
+                        break;
+                    case "NORMAL":
+                        difficulty = NORMAL;
+                        break;
+                    case "HARD":
+                        difficulty = HARD;
+                        break;
+                    case "START":
+                        currentScreen = GAMESCREEN;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -199,25 +213,6 @@ public class BasicGame implements GameLoop {
                 && mouseX < button.x + button.width
                 && mouseY > button.y
                 && mouseY < button.y + button.height;
-    }
-
-    public void executeButtonEvent(Button button) {
-        switch (button.label) {
-            case "EASY":
-                difficulty = EASY;
-                break;
-            case "NORMAL":
-                difficulty = NORMAL;
-                break;
-            case "HARD":
-                difficulty = HARD;
-                break;
-            case "START":
-                currentScreen = GAMESCREEN;
-                break;
-            default:
-                break;
-        }
     }
 
     public String difficultyToString() {
