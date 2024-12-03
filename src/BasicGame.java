@@ -85,32 +85,10 @@ public class BasicGame implements GameLoop {
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                         currentScreen = GAMESCREEN;
                     }
+                    naamInvoeren((char) keyboardEvent.getKeyCode());
                     break;
                 case GAMESCREEN:
-                    // Deze code wordt alleen uitgevoerd wanneer het gamescherm actief is
-                        char ingevoerdeLetter = (char) keyboardEvent.getKeyCode();
-                        // Als ingevoerde letter een letter is
-                        if (Character.isLetter(ingevoerdeLetter)) {
-                            // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
-                            ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
-
-                            // Checkt of geraden letter al eerder geraden is met contains
-                            if (geradenLetters.contains(ingevoerdeLetter)) {
-                                toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
-                            } else {
-                                geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
-
-                                // Veranderd char in string omdat contains alleen string herkend
-                                if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
-                                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
-                                } else {
-                                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
-                                }
-                            }
-                        } else {
-                            // Kan alleen een letter invoeren, geen andere tekens of cijfers
-                            toonBericht("Voer alstublieft alleen een letter in.");
-                        }
+                    registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
                     break;
                 case ENDSCREEN:
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
@@ -121,15 +99,18 @@ public class BasicGame implements GameLoop {
                     break;
             }
 
-            // Onthoud het ingedrukte woord
-            char letter = (char) keyboardEvent.getKeyCode();
-            boolean isLetter = Character.isLetter(letter);
-            if (isLetter || letter == ' ') {
-                letter = Character.toLowerCase(letter);
-                name = name + letter;
-            }
+
+
         }
     }
+public void naamInvoeren(char letter) {
+    // Onthoud het ingedrukte woord
+    boolean isLetter = Character.isLetter(letter);
+    if (isLetter || letter == ' ') {
+        letter = Character.toLowerCase(letter);
+        name = name + letter;
+    }
+}
 
     public void toonBericht(String tekst) {
         tijdelijkBericht = tekst;                           // Tekst
@@ -218,6 +199,31 @@ public class BasicGame implements GameLoop {
             case HARD -> "Hard";
             default -> "No difficulty set";
         };
+    }
+
+    public void registreerIngevoerdeLetters(char ingevoerdeLetter) {
+        // Als ingevoerde letter een letter is
+        if (Character.isLetter(ingevoerdeLetter)) {
+            // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
+            ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
+
+            // Checkt of geraden letter al eerder geraden is met contains
+            if (geradenLetters.contains(ingevoerdeLetter)) {
+                toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
+            } else {
+                geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
+
+                // Veranderd char in string omdat contains alleen string herkend
+                if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
+                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                } else {
+                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                }
+            }
+        } else {
+            // Kan alleen een letter invoeren, geen andere tekens of cijfers
+            toonBericht("Voer alstublieft alleen een letter in.");
+        }
     }
 
     public boolean gameOver() {
