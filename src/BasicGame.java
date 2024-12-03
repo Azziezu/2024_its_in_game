@@ -24,6 +24,8 @@ public class BasicGame implements GameLoop {
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
+    ArrayList<String> woordenlijst = new ArrayList<>();
+
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 900, 900, 40);
@@ -244,10 +246,7 @@ public void naamInvoeren(char letter) {
 
 CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
 
-ArrayList<String> woordenlijst = new ArrayList<>();
-    {
-    csvReader();
-}
+
 
 public void csvReader() {
     reader.skipRow();
