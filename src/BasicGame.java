@@ -16,6 +16,7 @@ public class BasicGame implements GameLoop {
     static final int NORMAL = 2;
     static final int HARD = 3;
 
+
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
@@ -275,14 +276,19 @@ public class BasicGame implements GameLoop {
         return false;
     }
 
-    public void csvReader() {
-        reader.skipRow();
-        reader.setSeparator(',');
-        while (reader.loadRow()) {
-            if (reader.getString(0).equals(difficultyToString())) {
-                woordenlijst.add(reader.getString(1));
-            }
+    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
+CsvReader reader = new CsvReader(CSVFile);
+
+
+
+public void csvReader() {
+    reader.skipRow();
+    reader.setSeparator(',');
+    while (reader.loadRow()) {
+        if (reader.getString(0).equals(difficultyToString())) {
+            woordenlijst.add(reader.getString(1));
         }
     }
+}
 }
 
