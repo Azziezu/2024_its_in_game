@@ -22,6 +22,8 @@ public class BasicGame implements GameLoop {
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
+    ArrayList<Character> goedGeradenLetters = new ArrayList<>();
+    ArrayList<Character> foutGeradenLetters = new ArrayList<>();
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
@@ -200,11 +202,23 @@ public class BasicGame implements GameLoop {
     public void drawGameScreen() {
         SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
         letterInvoeren();
+        drawRaadWoord();
     }
 
     public void drawEndScreen() {
         SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
         SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
+    }
+
+    public void drawRaadWoord() {
+        for (int i = 0; i < raadwoord.length(); i++) {
+            int spacing = (height - 200) / raadwoord.length();
+            if (goedGeradenLetters.contains(raadwoord.toLowerCase().charAt(i))) {
+                SaxionApp.drawText(""+raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
+            } else {
+                SaxionApp.drawText("_", 100 + (spacing * i), height - 100, 24);
+            }
+        }
     }
 
     public void naamInvoeren(char letter, Player player) {
@@ -263,8 +277,10 @@ public class BasicGame implements GameLoop {
                 // Veranderd char in string omdat contains alleen string herkend
                 if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                    goedGeradenLetters.add(ingevoerdeLetter);
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                    foutGeradenLetters.add(ingevoerdeLetter);
                 }
             }
         } else {
