@@ -46,7 +46,7 @@ public class BasicGame implements GameLoop {
     // Slaat invoer van de spelernaam op
     public void voerSperlernaam() {
         SaxionApp.drawText(" Voer je naam: ", 100, 100, 20);
-        SaxionApp.drawText(name, 100, 200, 30);
+        SaxionApp.drawText(name, 248, 100, 20);
     }
 
     @Override
