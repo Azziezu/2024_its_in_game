@@ -16,7 +16,6 @@ public class BasicGame implements GameLoop {
     static final int NORMAL = 2;
     static final int HARD = 3;
 
-
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
@@ -26,7 +25,8 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
+    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
+    CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 900, 900, 40);
@@ -126,31 +126,6 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public void naamInvoeren(char letter, Player player) {
-        // Onthoud het ingedrukte woord
-        boolean isLetter = Character.isLetter(letter);
-        if (isLetter || letter == ' ') {
-            if (!player.name.isEmpty()) {
-                letter = Character.toLowerCase(letter);
-            }
-            player.name = player.name + letter;
-        }
-    }
-
-    public String removeLastCharFromString(String string) {
-        return string.substring(0, string.length() - 1);
-    }
-
-    public void toonBericht(String tekst) {
-        tijdelijkBericht = tekst;                           // Tekst
-        berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
-    }
-
-    public void letterInvoeren(){
-        SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
-        SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
-    }
-
     @Override
     public void mouseEvent(MouseEvent mouseEvent) { // Herkent invoer op muis
         mouseX = mouseEvent.getX();
@@ -170,27 +145,6 @@ public class BasicGame implements GameLoop {
                     break;
             }
         }
-    }
-
-    public void drawStartScreen() {
-        SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
-        SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
-        SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
-        drawPlayerName();
-
-        for (Button button: buttonsStartScreen) {
-            button.drawButton();
-        }
-    }
-
-    public void drawGameScreen() {
-        SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
-        letterInvoeren();
-    }
-
-    public void drawEndScreen() {
-        SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
     }
 
     public void buttonEvent(ArrayList<Button> buttons) {
@@ -231,6 +185,53 @@ public class BasicGame implements GameLoop {
                 && mouseY > button.y
                 && mouseY < button.y + button.height;
     }
+
+    public void drawStartScreen() {
+        SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
+        SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
+        SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
+        drawPlayerName();
+
+        for (Button button: buttonsStartScreen) {
+            button.drawButton();
+        }
+    }
+
+    public void drawGameScreen() {
+        SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
+        letterInvoeren();
+    }
+
+    public void drawEndScreen() {
+        SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
+        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
+    }
+
+    public void naamInvoeren(char letter, Player player) {
+        // Onthoud het ingedrukte woord
+        boolean isLetter = Character.isLetter(letter);
+        if (isLetter || letter == ' ') {
+            if (!player.name.isEmpty()) {
+                letter = Character.toLowerCase(letter);
+            }
+            player.name = player.name + letter;
+        }
+    }
+
+    public String removeLastCharFromString(String string) {
+        return string.substring(0, string.length() - 1);
+    }
+
+    public void toonBericht(String tekst) {
+        tijdelijkBericht = tekst;                           // Tekst
+        berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
+    }
+
+    public void letterInvoeren(){
+        SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
+        SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
+    }
+
 
     public void editPlayerName(int playerId) {
         for (Player player : players) {
@@ -276,19 +277,14 @@ public class BasicGame implements GameLoop {
         return false;
     }
 
-    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
-CsvReader reader = new CsvReader(CSVFile);
-
-
-
-public void csvReader() {
-    reader.skipRow();
-    reader.setSeparator(',');
-    while (reader.loadRow()) {
-        if (reader.getString(0).equals(difficultyToString())) {
-            woordenlijst.add(reader.getString(1));
+    public void csvReader() {
+        reader.skipRow();
+        reader.setSeparator(',');
+        while (reader.loadRow()) {
+            if (reader.getString(0).equals(difficultyToString())) {
+                woordenlijst.add(reader.getString(1));
+            }
         }
     }
-}
 }
 
