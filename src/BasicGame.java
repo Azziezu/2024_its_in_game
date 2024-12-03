@@ -88,6 +88,30 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case GAMESCREEN:
+                    // Deze code wordt alleen uitgevoerd wanneer het gamescherm actief is
+                        char ingevoerdeLetter = (char) keyboardEvent.getKeyCode();
+                        // Als ingevoerde letter een letter is
+                        if (Character.isLetter(ingevoerdeLetter)) {
+                            // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
+                            ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
+
+                            // Checkt of geraden letter al eerder geraden is met contains
+                            if (geradenLetters.contains(ingevoerdeLetter)) {
+                                toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
+                            } else {
+                                geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
+
+                                // Veranderd char in string omdat contains alleen string herkend
+                                if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
+                                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                                } else {
+                                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                                }
+                            }
+                        } else {
+                            // Kan alleen een letter invoeren, geen andere tekens of cijfers
+                            toonBericht("Voer alstublieft alleen een letter in.");
+                        }
                     break;
                 case ENDSCREEN:
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
@@ -96,33 +120,6 @@ public class BasicGame implements GameLoop {
                     break;
                 default:
                     break;
-            }
-
-            // Deze code wordt alleen uitgevoerd wanneer het gamescherm actief is
-            if (keyboardEvent.isKeyPressed() && currentScreen == GAMESCREEN) {
-                char ingevoerdeLetter = (char) keyboardEvent.getKeyCode();
-                // Als ingevoerde letter een letter is
-                if (Character.isLetter(ingevoerdeLetter)) {
-                    // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
-                    ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
-
-                    // Checkt of geraden letter al eerder geraden is met contains
-                    if (geradenLetters.contains(ingevoerdeLetter)) {
-                        toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
-                    } else {
-                        geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
-
-                        // Veranderd char in string omdat contains alleen string herkend
-                        if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
-                            toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
-                        } else {
-                            toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
-                        }
-                    }
-                } else {
-                    // Kan alleen een letter invoeren, geen andere tekens of cijfers
-                    toonBericht("Voer alstublieft alleen een letter in.");
-                }
             }
 
             // Onthoud het ingedrukte woord
