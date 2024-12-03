@@ -16,6 +16,7 @@ public class BasicGame implements GameLoop {
     static final int NORMAL = 2;
     static final int HARD = 3;
 
+
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
     String name = "";
@@ -244,7 +245,8 @@ public void naamInvoeren(char letter) {
         return false;
     }
 
-CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
+    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
+CsvReader reader = new CsvReader(CSVFile);
 
 
 
