@@ -10,6 +10,7 @@ public class BasicGame implements GameLoop {
     static final int STARTSCREEN = 1;
     static final int GAMESCREEN = 2;
     static final int ENDSCREEN = 3;
+    static final int LEADERBOARDSCREEN = 4;
     static final int EASY = 1;
     static final int NORMAL = 2;
     static final int HARD = 3;
@@ -39,6 +40,8 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("NORMAL", width / 3 + 30, height - 180, width / 3 - 60, 60));
         buttonsStartScreen.add(new Button("HARD", (width / 3 * 2) + 30, height - 180, width / 3 - 60, 60));
 
+        buttonsStartScreen.add(new Button("Leaderboard", (width / 3 * 2) + 20, height - 650, width / 3 - 40, 60));
+
         buttonsStartScreen.add(new Button("START", 30, height - 90, width - 60, 60));
     }
 
@@ -64,6 +67,8 @@ public class BasicGame implements GameLoop {
                 break;
             case ENDSCREEN:
                 drawEndScreen();
+                break;
+            case LEADERBOARDSCREEN:
                 break;
             default:
                 break;
@@ -95,14 +100,14 @@ public class BasicGame implements GameLoop {
                         currentScreen = STARTSCREEN;
                     }
                     break;
+                case LEADERBOARDSCREEN:
+                    break;
                 default:
                     break;
             }
-
-
-
         }
     }
+
 public void naamInvoeren(char letter) {
     // Onthoud het ingedrukte woord
     boolean isLetter = Character.isLetter(letter);
@@ -135,6 +140,8 @@ public void naamInvoeren(char letter) {
                     break;
                 case ENDSCREEN:
                     break;
+                case LEADERBOARDSCREEN:
+                    break;
                 default:
                     break;
             }
@@ -166,6 +173,9 @@ public void naamInvoeren(char letter) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
                 switch (button.label) {
+                    case"LEADERBOARD":
+                        currentScreen = LEADERBOARDSCREEN;
+                        break;
                     case "EASY":
                         difficulty = EASY;
                         break;

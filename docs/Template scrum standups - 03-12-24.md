@@ -43,11 +43,8 @@ CSV reader was weg dus hij moet hier opnieuw mee bezig.
 Gaat verder met het tekenen van de guillotine en de logica hier achter.
 
 #### Azra
-Azra gaat bezig met de invoer voor het raden van het woord. 
-Dus invoer van de letters.
-Naast dit gaat ze bezig met het systeem voor het bijhouden van 
-of geraden letters correct of incorrect zijn.
-(Zelfde taken)
+Azra gaat bezig met het tekenen van de guillotine en mes. 
+Naast dit ga ik bezig met een leaderboard knop toevoegen die ook werkt.
 
 #### Bart
 Hij gaat nu verder met het weergeven van het
