@@ -194,7 +194,7 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
         drawPlayerName();
 
-        for (Button button: buttonsStartScreen) {
+        for (Button button : buttonsStartScreen) {
             button.drawButton();
         }
     }
@@ -203,6 +203,7 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
         letterInvoeren();
         drawRaadWoord();
+
     }
 
     public void drawEndScreen() {
@@ -214,7 +215,7 @@ public class BasicGame implements GameLoop {
         for (int i = 0; i < raadwoord.length(); i++) {
             int spacing = (height - 200) / raadwoord.length();
             if (goedGeradenLetters.contains(raadwoord.toLowerCase().charAt(i))) {
-                SaxionApp.drawText(""+raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
+                SaxionApp.drawText("" + raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
             } else {
                 SaxionApp.drawText("_", 100 + (spacing * i), height - 100, 24);
             }
@@ -241,10 +242,16 @@ public class BasicGame implements GameLoop {
         berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
     }
 
-    public void letterInvoeren(){
+    public void letterInvoeren() {
         SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
+        //laat de Guillitine zien
+        SaxionApp.drawImage("Resources/Guillotine.jpg", 450, 100, 400, 500);
+
+
     }
+
+
 
 
     public void editPlayerName(int playerId) {
