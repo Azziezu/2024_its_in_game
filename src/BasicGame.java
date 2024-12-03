@@ -25,7 +25,7 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
+    String CSVFile = "docs/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
