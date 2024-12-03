@@ -18,14 +18,14 @@ public class BasicGame implements GameLoop {
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
-    String name = "";
+    ArrayList<String> woordenlijst = new ArrayList<>();
+    ArrayList<Button> buttonsStartScreen = new ArrayList<>();
+    ArrayList<Player> players = new ArrayList<>();
     ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    ArrayList<Button> buttonsStartScreen = new ArrayList<>();
-    ArrayList<String> woordenlijst = new ArrayList<>();
-
+    CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 900, 900, 40);
@@ -40,19 +40,21 @@ public class BasicGame implements GameLoop {
         height = SaxionApp.getHeight();
         csvReader();
 
-        buttonsStartScreen.add(new Button("EASY", 30, height - 180, width / 3 - 60, 60));
-        buttonsStartScreen.add(new Button("NORMAL", width / 3 + 30, height - 180, width / 3 - 60, 60));
-        buttonsStartScreen.add(new Button("HARD", (width / 3 * 2) + 30, height - 180, width / 3 - 60, 60));
+        players.add(new Player(1, ""));
+        // players.add(new Player(2, ""));
 
-        buttonsStartScreen.add(new Button("Leaderboard", (width / 3 * 2) + 20, height - 650, width / 3 - 40, 60));
-
-        buttonsStartScreen.add(new Button("START", 30, height - 90, width - 60, 60));
+        buttonsStartScreen.add(new Button("EDIT", "EDITP1", 30, 290, 60, 30, Button.ALIGNLEFT, 20));
+        // buttonsStartScreen.add(new Button("EDIT", "EDITP2", (width / 2) + 30, 290, 60, 30, Button.ALIGNLEFT, 20));
+        buttonsStartScreen.add(new Button("EASY", "EASY", 30, height - 180, width / 3 - 45, 60));
+        buttonsStartScreen.add(new Button("NORMAL", "NORMAL", (width / 3) + 15, height - 180, width / 3 - 30, 60));
+        buttonsStartScreen.add(new Button("HARD", "HARD", (width / 3 * 2) + 15, height - 180, width / 3 - 45, 60));
+        buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (width / 2) - 45, 60));
+        buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (width / 2) + 15, height - 90, (width / 2) - 45, 60));
     }
 
     // Slaat invoer van de spelernaam op
-    public void voerSperlernaam() {
-        SaxionApp.drawText(" Voer je naam: ", 100, 100, 20);
-        SaxionApp.drawText(name, 248, 100, 20);
+    public void drawPlayerName() {
+        SaxionApp.drawText("Voer je naam in: " + players.getFirst().name, 100, 300, 20);
     }
 
     @Override
@@ -94,7 +96,18 @@ public class BasicGame implements GameLoop {
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                         currentScreen = GAMESCREEN;
                     }
-                    naamInvoeren((char) keyboardEvent.getKeyCode());
+                    if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_BACK_SPACE) {
+                        for (Player player : players) {
+                            if (player.editable) {
+                                player.name = removeLastCharFromString(player.name);
+                            }
+                        }
+                    }
+                    for (Player player : players) {
+                        if (player.editable) {
+                            naamInvoeren((char) keyboardEvent.getKeyCode(), player);
+                        }
+                    }
                     break;
                 case GAMESCREEN:
                     registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
@@ -112,14 +125,20 @@ public class BasicGame implements GameLoop {
         }
     }
 
-public void naamInvoeren(char letter) {
-    // Onthoud het ingedrukte woord
-    boolean isLetter = Character.isLetter(letter);
-    if (isLetter || letter == ' ') {
-        letter = Character.toLowerCase(letter);
-        name = name + letter;
+    public void naamInvoeren(char letter, Player player) {
+        // Onthoud het ingedrukte woord
+        boolean isLetter = Character.isLetter(letter);
+        if (isLetter || letter == ' ') {
+            if (!player.name.isEmpty()) {
+                letter = Character.toLowerCase(letter);
+            }
+            player.name = player.name + letter;
+        }
     }
-}
+
+    public String removeLastCharFromString(String string) {
+        return string.substring(0, string.length() - 1);
+    }
 
     public void toonBericht(String tekst) {
         tijdelijkBericht = tekst;                           // Tekst
@@ -156,7 +175,7 @@ public void naamInvoeren(char letter) {
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
-        voerSperlernaam();
+        drawPlayerName();
 
         for (Button button: buttonsStartScreen) {
             button.drawButton();
@@ -176,9 +195,15 @@ public void naamInvoeren(char letter) {
     public void buttonEvent(ArrayList<Button> buttons) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
-                switch (button.label) {
-                    case"LEADERBOARD":
+                switch (button.action) {
+                    case "LEADERBOARD":
                         currentScreen = LEADERBOARDSCREEN;
+                        break;
+                    case "EDITP1":
+                        editPlayerName(1);
+                        break;
+                    case "EDITP2":
+                        editPlayerName(2);
                         break;
                     case "EASY":
                         difficulty = EASY;
@@ -204,6 +229,12 @@ public void naamInvoeren(char letter) {
                 && mouseX < button.x + button.width
                 && mouseY > button.y
                 && mouseY < button.y + button.height;
+    }
+
+    public void editPlayerName(int playerId) {
+        for (Player player : players) {
+            player.editable = player.id == playerId;
+        }
     }
 
     public String difficultyToString() {
@@ -244,18 +275,14 @@ public void naamInvoeren(char letter) {
         return false;
     }
 
-CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
-
-
-
-public void csvReader() {
-    reader.skipRow();
-    reader.setSeparator(',');
-    while (reader.loadRow()) {
-        if (reader.getString(0).equals(difficultyToString())) {
-            woordenlijst.add(reader.getString(1));
+    public void csvReader() {
+        reader.skipRow();
+        reader.setSeparator(',');
+        while (reader.loadRow()) {
+            if (reader.getString(0).equals(difficultyToString())) {
+                woordenlijst.add(reader.getString(1));
+            }
         }
     }
-}
 }
 
