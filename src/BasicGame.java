@@ -85,6 +85,7 @@ public class BasicGame implements GameLoop {
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                         currentScreen = GAMESCREEN;
                     }
+                    naamInvoeren((char) keyboardEvent.getKeyCode());
                     break;
                 case GAMESCREEN:
                     registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
@@ -98,15 +99,18 @@ public class BasicGame implements GameLoop {
                     break;
             }
 
-            // Onthoud het ingedrukte woord
-            char letter = (char) keyboardEvent.getKeyCode();
-            boolean isLetter = Character.isLetter(letter);
-            if (isLetter || letter == ' ') {
-                letter = Character.toLowerCase(letter);
-                name = name + letter;
-            }
+
+
         }
     }
+public void naamInvoeren(char letter) {
+    // Onthoud het ingedrukte woord
+    boolean isLetter = Character.isLetter(letter);
+    if (isLetter || letter == ' ') {
+        letter = Character.toLowerCase(letter);
+        name = name + letter;
+    }
+}
 
     public void toonBericht(String tekst) {
         tijdelijkBericht = tekst;                           // Tekst
