@@ -4,6 +4,9 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -35,6 +38,7 @@ public class BasicGame implements GameLoop {
         difficulty = NORMAL;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
+        csvReader();
 
         buttonsStartScreen.add(new Button("EASY", 30, height - 180, width / 3 - 60, 60));
         buttonsStartScreen.add(new Button("NORMAL", width / 3 + 30, height - 180, width / 3 - 60, 60));
@@ -226,5 +230,40 @@ public class BasicGame implements GameLoop {
 
     public boolean gameOver() {
         return false;
+    }
+
+
+
+    public void csvReader() {
+        String file = "Resources\\Franse woorden.csv";
+        BufferedReader reader = null;
+        String line = "";
+
+        try{
+            reader = new BufferedReader(new FileReader(file));
+            while((line = reader.readLine()) != null) {
+
+                String[] row = line.split(",");
+
+                for(String index : row) {
+                    System.out.printf("%-10s", index);
+                }
+                System.out.println();
+            }
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+
+        }
+        finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
     }
 }
