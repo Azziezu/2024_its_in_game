@@ -16,7 +16,6 @@ public class BasicGame implements GameLoop {
     static final int NORMAL = 2;
     static final int HARD = 3;
 
-
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
@@ -26,7 +25,8 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    CsvReader reader = new CsvReader("Resources/Franse woorden.csv");
+    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
+    CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
         SaxionApp.startGameLoop(new BasicGame(), 900, 900, 40);
@@ -276,19 +276,14 @@ public class BasicGame implements GameLoop {
         return false;
     }
 
-    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
-CsvReader reader = new CsvReader(CSVFile);
-
-
-
-public void csvReader() {
-    reader.skipRow();
-    reader.setSeparator(',');
-    while (reader.loadRow()) {
-        if (reader.getString(0).equals(difficultyToString())) {
-            woordenlijst.add(reader.getString(1));
+    public void csvReader() {
+        reader.skipRow();
+        reader.setSeparator(',');
+        while (reader.loadRow()) {
+            if (reader.getString(0).equals(difficultyToString())) {
+                woordenlijst.add(reader.getString(1));
+            }
         }
     }
-}
 }
 
