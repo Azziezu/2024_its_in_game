@@ -229,10 +229,8 @@ public class BasicGame implements GameLoop {
         return false;
     }
 
-
-
     public void csvReader() {
-        String file = "Resources\\Franse woorden.csv";
+        String file = "Resources/Franse woorden.csv";
         BufferedReader reader = null;
         String line = "";
 
@@ -263,4 +261,5 @@ public class BasicGame implements GameLoop {
         }
 
     }
+
 }
