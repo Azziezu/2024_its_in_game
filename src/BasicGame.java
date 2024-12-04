@@ -4,6 +4,7 @@ import nl.saxion.app.SaxionApp;
 import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
+
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -17,6 +18,8 @@ public class BasicGame implements GameLoop {
     static final int HARD = 3;
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
+    int x = 450;
+    int y = 100;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
@@ -247,8 +250,7 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
         SaxionApp.drawImage("Resources/Guillotine.jpg", 450, 100, 400, 500);
-
-
+        SaxionApp.drawImage("Resources/mes/mes.png", 450, 100, 250, 200);
     }
 
 
@@ -286,6 +288,10 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
+                    y =+ 100;
+
+                    SaxionApp.drawImage("Resources/mes/mes.png", x, y, 250, 200);
+
                 }
             }
         } else {
