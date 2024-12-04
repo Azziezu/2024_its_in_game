@@ -252,8 +252,6 @@ public class BasicGame implements GameLoop {
     }
 
 
-
-
     public void editPlayerName(int playerId) {
         for (Player player : players) {
             player.editable = player.id == playerId;
