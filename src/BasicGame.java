@@ -30,7 +30,7 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "docs/FranseWoorden.csv";
+    String CSVFile = "BasicGame/docs/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
@@ -60,7 +60,7 @@ public class BasicGame implements GameLoop {
 
     // Slaat invoer van de spelernaam op
     public void drawPlayerName() {
-        SaxionApp.drawText("Voer je naam in: " + players.getFirst().name, 100, 300, 20);
+        SaxionApp.drawText("Voer je naam in: " + players.get(0).name, 100, 300, 20);
     }
 
     @Override
