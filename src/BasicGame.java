@@ -45,7 +45,6 @@ public class BasicGame implements GameLoop {
         difficulty = NORMAL;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
-        csvReader();
 
         players.add(new Player(1, ""));
         // players.add(new Player(2, ""));
@@ -122,6 +121,7 @@ public class BasicGame implements GameLoop {
                 case ENDSCREEN:
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
                         currentScreen = STARTSCREEN;
+                        resetGame();
                     }
                     break;
                 case LEADERBOARDSCREEN:
@@ -176,6 +176,7 @@ public class BasicGame implements GameLoop {
                         difficulty = HARD;
                         break;
                     case "START":
+                        csvReader();
                         currentScreen = GAMESCREEN;
                         break;
                     default:
@@ -258,7 +259,6 @@ public class BasicGame implements GameLoop {
 
     }
 
-
     public void editPlayerName(int playerId) {
         for (Player player : players) {
             player.editable = player.id == playerId;
@@ -303,7 +303,20 @@ public class BasicGame implements GameLoop {
     }
 
     public boolean gameOver() {
-        return false;
+        for (char c : raadwoord.toLowerCase().toCharArray()) {
+            if (!goedGeradenLetters.contains(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void resetGame() {
+        geradenLetters.clear();
+        goedGeradenLetters.clear();
+        foutGeradenLetters.clear();
+        woordenlijst.clear();
+        reader = new CsvReader(CSVFile);
     }
 
     public void csvReader() {
