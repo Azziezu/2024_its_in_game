@@ -20,6 +20,7 @@ public class BasicGame implements GameLoop {
     int mouseX, mouseY, width, height, currentScreen, difficulty;
    // Y cordinator om de mes te laten vallen
     int vallendeMes = 100;
+
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
@@ -249,9 +250,12 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
-        SaxionApp.drawImage("resources/Guillotine.jpg", 450, 100, 400, 500);
+        SaxionApp.drawImage("Resources/Guillotine.jpg", 450, 100, 400, 500);
         //De mes van de guilltine is zichtbaar
-        SaxionApp.drawImage("resources/mes/mes.png", 450, vallendeMes, 250, 200);
+        SaxionApp.drawImage("Resources/mes/mes.png", 450, vallendeMes, 250, 200);
+        SaxionApp.drawImage("Resources/Lichaam.png",600,450,200,100);
+        SaxionApp.drawImage("Resources/hoofd.png",400,448,200,100);
+
     }
 
 
@@ -289,7 +293,7 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
-                    vallendeMes +=50;
+                    vallendeMes +=20;
                 }
             }
         } else {
