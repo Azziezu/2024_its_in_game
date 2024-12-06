@@ -30,7 +30,7 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "Resources/FranseWoorden.csv";
+    String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
@@ -249,9 +249,9 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
-        SaxionApp.drawImage("Resources/Guillotine.jpg", 450, 100, 400, 500);
+        SaxionApp.drawImage("resources/Guillotine.jpg", 450, 100, 400, 500);
         //De mes van de guilltine is zichtbaar
-        SaxionApp.drawImage("Resources/mes/mes.png", 450, vallendeMes, 250, 200);
+        SaxionApp.drawImage("resources/mes/mes.png", 450, vallendeMes, 250, 200);
     }
 
 
@@ -290,9 +290,6 @@ public class BasicGame implements GameLoop {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
                     vallendeMes +=50;
-                    //De mes valt per slecht geraden word naar beneden
-                    SaxionApp.drawImage("Resources/mes/mes.png",450 , vallendeMes, 250, 200);
-
                 }
             }
         } else {
