@@ -5,7 +5,6 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -20,9 +19,8 @@ public class BasicGame implements GameLoop {
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     // Y cordinator om de mes te laten vallen
-    int vallendeMes = 100;
-    int hoofdx=400;
-    boolean mesStopt = false;
+    int vallendeMes = -105;
+    boolean stopDeMes = false;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
@@ -33,7 +31,7 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "BasicGame/resources/FranseWoorden.csv";
+    String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
@@ -255,9 +253,9 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
         SaxionApp.drawImage("Resources/Guillotine.png", 100, -100, 800, 800);
-        if (!mesStopt){
+        if (!stopDeMes) {
             //De mes van de guilltine is zichtbaar
-            SaxionApp.drawImage("Resources/mes.png", 600, vallendeMes, 250, 200);
+            SaxionApp.drawImage("Resources/mes.png", 101, vallendeMes, 800, 680);
         } else {
             //De mes van de guilltine is zichtbaar
             SaxionApp.drawImage("Resources/mes.png", 450, 448, 250, 200);
@@ -301,15 +299,12 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
-                    if (!mesStopt) {
-                        vallendeMes += 20;
-                    }
-
-                    if (vallendeMes >=300){
-                        mesStopt = true;
-
-
-
+                    //de mes valt 50 pixxels naar beneden
+                    vallendeMes += 50;
+                    // de mes mag niet lager zijn dan 195
+                    if (vallendeMes > 195) {
+                        // De mes blijft op de postie 195
+                        vallendeMes = 195;
                     }
                 }
             }
@@ -333,6 +328,7 @@ public class BasicGame implements GameLoop {
         goedGeradenLetters.clear();
         foutGeradenLetters.clear();
         woordenlijst.clear();
+        vallendeMes = -105;
         reader = new CsvReader(CSVFile);
     }
 
