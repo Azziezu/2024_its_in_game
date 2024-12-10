@@ -253,13 +253,11 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
         SaxionApp.drawImage("Resources/Guillotine.png", 100, -100, 800, 800);
-        if (!stopDeMes) {
-            //De mes van de guilltine is zichtbaar
-            SaxionApp.drawImage("Resources/mes.png", 101, vallendeMes, 800, 680);
-        } else {
-            //De mes van de guilltine is zichtbaar
-            SaxionApp.drawImage("Resources/mes.png", 450, 448, 250, 200);
-        }
+
+        //De mes van de guilltine is zichtbaar
+        SaxionApp.drawImage("Resources/mes.png", 101, vallendeMes, 800, 680);
+        //De mes van de guilltine is zichtbaar
+
         //  capybarahoofd is zichtbaar.
         SaxionApp.drawImage("Resources/Capybarahoofd.png", 65, 80, 825, 775);
 
