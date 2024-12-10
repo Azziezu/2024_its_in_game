@@ -5,6 +5,7 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -18,9 +19,10 @@ public class BasicGame implements GameLoop {
     static final int HARD = 3;
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
-   // Y cordinator om de mes te laten vallen
+    // Y cordinator om de mes te laten vallen
     int vallendeMes = 100;
-
+    int hoofdx=400;
+    boolean mesStopt = false;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
@@ -56,6 +58,7 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("HARD", "HARD", (width / 3 * 2) + 15, height - 180, width / 3 - 45, 60));
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (width / 2) - 45, 60));
         buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (width / 2) + 15, height - 90, (width / 2) - 45, 60));
+
     }
 
     // Slaat invoer van de spelernaam op
@@ -251,11 +254,16 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Voer een letter in: ", 20, 50, 30); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 100, 20); // Toon de geraden letters tekst
         //laat de Guillitine zien
-        SaxionApp.drawImage("Resources/Guillotine.jpg", 450, 100, 400, 500);
-        //De mes van de guilltine is zichtbaar
-        SaxionApp.drawImage("Resources/mes/mes.png", 450, vallendeMes, 250, 200);
-        SaxionApp.drawImage("Resources/Lichaam.png",600,450,200,100);
-        SaxionApp.drawImage("Resources/hoofd.png",400,448,200,100);
+        SaxionApp.drawImage("Resources/Guillotine.png", 100, -100, 800, 800);
+        if (!mesStopt){
+            //De mes van de guilltine is zichtbaar
+            SaxionApp.drawImage("Resources/mes.png", 600, vallendeMes, 250, 200);
+        } else {
+            //De mes van de guilltine is zichtbaar
+            SaxionApp.drawImage("Resources/mes.png", 450, 448, 250, 200);
+        }
+        //  capybarahoofd is zichtbaar.
+        SaxionApp.drawImage("Resources/Capybarahoofd.png", 65, 80, 825, 775);
 
     }
 
@@ -293,7 +301,16 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
-                    vallendeMes +=20;
+                    if (!mesStopt) {
+                        vallendeMes += 20;
+                    }
+
+                    if (vallendeMes >=300){
+                        mesStopt = true;
+
+
+
+                    }
                 }
             }
         } else {
