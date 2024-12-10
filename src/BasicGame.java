@@ -20,7 +20,6 @@ public class BasicGame implements GameLoop {
     int mouseX, mouseY, width, height, currentScreen, difficulty;
     // Y cordinator om de mes te laten vallen
     int vallendeMes = -105;
-    boolean stopDeMes = false;
     String raadwoord;
     ArrayList<String> woordenlijst = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
