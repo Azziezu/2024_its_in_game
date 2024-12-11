@@ -71,10 +71,13 @@ public class BasicGame implements GameLoop {
                 drawStartScreen();
                 break;
             case GAMESCREEN:
-                if (gameOver()) {
+                drawGameScreen();
+                if (gameWon()) {
+                    tijdelijkBericht = "Je hebt gewonnen!";
                     currentScreen = ENDSCREEN;
-                } else {
-                    drawGameScreen();
+                } else if (gameLost()){
+                    tijdelijkBericht = "Je hebt verloren...";
+                    currentScreen = ENDSCREEN;
                 }
                 break;
             case ENDSCREEN:
@@ -297,7 +300,7 @@ public class BasicGame implements GameLoop {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
                     //de mes valt 50 pixxels naar beneden
-                    vallendeMes += 50;
+                    vallendeMes += 300 / raadwoord.length() + 1;
                     // de mes mag niet lager zijn dan 195
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
@@ -311,7 +314,11 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public boolean gameOver() {
+    public boolean gameLost() {
+        return foutGeradenLetters.size() == raadwoord.length();
+    }
+
+    public boolean gameWon() {
         for (char c : raadwoord.toLowerCase().toCharArray()) {
             if (!goedGeradenLetters.contains(c)) {
                 return false;
