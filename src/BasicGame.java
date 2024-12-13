@@ -21,7 +21,9 @@ public class BasicGame implements GameLoop {
     // Y cordinator om de mes te laten vallen
     int vallendeMes = -105;
     String raadwoord;
-    ArrayList<String> woordenlijst = new ArrayList<>();
+    ArrayList<String> woordenlijstEasy = new ArrayList<>();
+    ArrayList<String> woordenlijstNormal = new ArrayList<>();
+    ArrayList<String> woordenlijstHard = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
@@ -44,6 +46,7 @@ public class BasicGame implements GameLoop {
         difficulty = NORMAL;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
+        csvReader();
 
         players.add(new Player(1, ""));
         // players.add(new Player(2, ""));
@@ -179,7 +182,7 @@ public class BasicGame implements GameLoop {
                         difficulty = HARD;
                         break;
                     case "START":
-                        csvReader();
+                        raadwoord = kiesRandomWoord();
                         currentScreen = GAMESCREEN;
                         break;
                     default:
@@ -331,7 +334,6 @@ public class BasicGame implements GameLoop {
         geradenLetters.clear();
         goedGeradenLetters.clear();
         foutGeradenLetters.clear();
-        woordenlijst.clear();
         vallendeMes = -105;
         reader = new CsvReader(CSVFile);
     }
@@ -340,10 +342,36 @@ public class BasicGame implements GameLoop {
         reader.skipRow();
         reader.setSeparator(',');
         while (reader.loadRow()) {
-            if (reader.getString(0).equals(difficultyToString())) {
-                woordenlijst.add(reader.getString(1));
+            if (reader.getString(0).equals("Easy")){
+                woordenlijstEasy.add(reader.getString(1));
             }
+            else if(reader.getString(0).equals("Normal"))
+            {
+                woordenlijstNormal.add(reader.getString(1));
+            }
+            else if(reader.getString(0).equals("Hard")){
+                woordenlijstHard.add(reader.getString(1));
+            }
+
+
+
+
         }
+
+
+
+    }
+    public String kiesRandomWoord(){
+        if (difficulty == EASY) {
+            return woordenlijstEasy.get(SaxionApp.getRandomValueBetween(0, woordenlijstEasy.size() - 1));
+        } else if (difficulty == NORMAL){
+            return woordenlijstNormal.get(SaxionApp.getRandomValueBetween(0, woordenlijstNormal.size() - 1));
+        } else if (difficulty == HARD){
+            return woordenlijstHard.get(SaxionApp.getRandomValueBetween(0, woordenlijstHard.size() - 1));
+        }
+        return "capybara";
+
+
     }
 }
 
