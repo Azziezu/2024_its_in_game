@@ -5,8 +5,6 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
-import java.time.LocalDateTime;
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -20,7 +18,7 @@ public class BasicGame implements GameLoop {
     static final int HARD = 3;
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
-    // Y coordinator om de mes te laten vallen
+    // Y cordinator om de mes te laten vallen
     int vallendeMes = -105;
     String raadwoord;
     ArrayList<String> woordenlijstEasy = new ArrayList<>();
@@ -34,7 +32,7 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "resources/FranseWoorden.csv";
+    String CSVFile = "BasicGame/resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
     public static void main(String[] args) {
@@ -204,7 +202,6 @@ public class BasicGame implements GameLoop {
     public void drawStartScreen() {
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
-        SaxionApp.drawText("Je score: " + players.get(0).score, 20, 100, 24);
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
         drawPlayerName();
 
@@ -214,9 +211,8 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        SaxionApp.drawText("Raad het woord: " + raadwoord, 30, 30, 24);
-        //SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
-        SaxionApp.drawText("Speler: " + players.get(0).name, 20, 20, 24); // Display the player's name
+        SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
+        SaxionApp.drawText("Speler: " + players.get(0).name, 20, 20, 24);
         SaxionApp.drawText("Je score: " + players.get(0).score, 20, 50, 24);
         letterInvoeren();
         drawRaadWoord();
@@ -230,12 +226,10 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawEndScreen() {
-        SaxionApp.drawText("Spel voorbij!", 30, 30, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 30, 60, 24);
-        SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
-        SaxionApp.drawText("Je score: " + players.get(0).score, 20, 60, 24);
-        SaxionApp.drawText("Speler: " + players.get(0).name, 20, 100, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 150, 24);
+        SaxionApp.drawText("Speler: " + players.get(0).name, 20, 20, 24);
+        SaxionApp.drawText("Je score: " + players.get(0).score, 20, 50, 24);
+        SaxionApp.drawText("Spel voorbij!", 20, 80, 24);
+        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 120, 24);
     }
 
     public void drawRaadWoord() {
@@ -270,8 +264,8 @@ public class BasicGame implements GameLoop {
     }
 
     public void letterInvoeren() {
-        SaxionApp.drawText("Voer een letter in: ", 20, 80, 26); // Tekst voor letter invoeren
-        SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 120, 20); // Toon de geraden letters tekst
+        SaxionApp.drawText("Voer een letter in: ", 20, 80, 30); // Tekst voor letter invoeren
+        SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 110, 20); // Toon de geraden letters tekst
         //laat de Guillotine zien
         SaxionApp.drawImage("BasicGame/Resources/Guillotine.png", 100, -100, 800, 800);
 
@@ -324,7 +318,6 @@ public class BasicGame implements GameLoop {
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
-
                     }
                 }
             }
@@ -355,8 +348,6 @@ public class BasicGame implements GameLoop {
         reader = new CsvReader(CSVFile);
     }
 
-
-
     public void csvReader() {
         reader.skipRow();
         reader.setSeparator(',');
@@ -384,5 +375,4 @@ public class BasicGame implements GameLoop {
         }
         return "capybara";
     }
-
 }
