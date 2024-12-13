@@ -115,9 +115,14 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case GAMESCREEN:
-                    if (gameLost() || gameWon()) {
+                    if (gameLost()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
+                        }
+                    } else if (gameWon()) {
+                        if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
+                            currentScreen = ENDSCREEN;
+                            players.get(0).score++;
                         }
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
