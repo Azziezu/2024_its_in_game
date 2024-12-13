@@ -314,8 +314,7 @@ public class BasicGame implements GameLoop {
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
-                        // Je gaat terug naar de menu als je verloren hebt.
-                        backToMainMenu();
+
                     }
                 }
             }
@@ -346,12 +345,7 @@ public class BasicGame implements GameLoop {
         reader = new CsvReader(CSVFile);
     }
 
-    public void backToMainMenu(){
-        //buttonsStartScreen.add(new Button());
-        resetGame();
-        //je gaat naar de startpagina
-        init();
-    }
+
 
     public void csvReader() {
         reader.skipRow();
