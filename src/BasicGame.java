@@ -324,6 +324,7 @@ public class BasicGame implements GameLoop {
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
+
                     }
                 }
             }
@@ -353,6 +354,8 @@ public class BasicGame implements GameLoop {
         vallendeMes = -105;
         reader = new CsvReader(CSVFile);
     }
+
+
 
     public void csvReader() {
         reader.skipRow();
