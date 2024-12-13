@@ -296,12 +296,14 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
-                    //de mes valt 50 pixxels naar beneden
+                    //de mes valt 50 pixels naar beneden
                     vallendeMes += 50;
                     // de mes mag niet lager zijn dan 195
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
+                        // Je gaat terug naar de menu als je verloren hebt.
+                        backToMainMenu();
                     }
                 }
             }
@@ -327,6 +329,13 @@ public class BasicGame implements GameLoop {
         woordenlijst.clear();
         vallendeMes = -105;
         reader = new CsvReader(CSVFile);
+    }
+
+    public void backToMainMenu(){
+        //buttonsStartScreen.add(new Button());
+        resetGame();
+        //je gaat naar de startpagina
+        init();
     }
 
     public void csvReader() {
