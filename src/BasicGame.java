@@ -21,7 +21,9 @@ public class BasicGame implements GameLoop {
     // Y cordinator om de mes te laten vallen
     int vallendeMes = -105;
     String raadwoord;
-    ArrayList<String> woordenlijst = new ArrayList<>();
+    ArrayList<String> woordenlijstEasy = new ArrayList<>();
+    ArrayList<String> woordenlijstNormal = new ArrayList<>();
+    ArrayList<String> woordenlijstHard = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
@@ -44,6 +46,7 @@ public class BasicGame implements GameLoop {
         difficulty = NORMAL;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
+        csvReader();
 
         players.add(new Player(1, ""));
         // players.add(new Player(2, ""));
@@ -71,11 +74,7 @@ public class BasicGame implements GameLoop {
                 drawStartScreen();
                 break;
             case GAMESCREEN:
-                if (gameOver()) {
-                    currentScreen = ENDSCREEN;
-                } else {
-                    drawGameScreen();
-                }
+                drawGameScreen();
                 break;
             case ENDSCREEN:
                 drawEndScreen();
@@ -116,7 +115,14 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case GAMESCREEN:
-                    registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
+                    if (gameLost() || gameWon()) {
+                        if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
+                            currentScreen = ENDSCREEN;
+                        }
+                    } else {
+                        registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
+                    }
+
                     break;
                 case ENDSCREEN:
                     if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
@@ -176,7 +182,7 @@ public class BasicGame implements GameLoop {
                         difficulty = HARD;
                         break;
                     case "START":
-                        csvReader();
+                        raadwoord = kiesRandomWoord();
                         currentScreen = GAMESCREEN;
                         break;
                     default:
@@ -205,15 +211,21 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        SaxionApp.drawText("Raad het woord: " + raadwoord, 20, 20, 24);
+        SaxionApp.drawText("Raad het woord: " + raadwoord, 30, 30, 24);
         letterInvoeren();
         drawRaadWoord();
-
+        if (gameWon()) {
+            SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
+            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
+        } else if (gameLost()) {
+            SaxionApp.drawText("Je hebt verloren...", 30, 300, 24);
+            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
+        }
     }
 
     public void drawEndScreen() {
-        SaxionApp.drawText("Spel voorbij!", 20, 20, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 60, 24);
+        SaxionApp.drawText("Spel voorbij!", 30, 30, 24);
+        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 30, 60, 24);
     }
 
     public void drawRaadWoord() {
@@ -296,8 +308,8 @@ public class BasicGame implements GameLoop {
                 } else {
                     toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
-                    //de mes valt 50 pixels naar beneden
-                    vallendeMes += 50;
+                    // de mes valt 50 pixels naar beneden
+                    vallendeMes += 300 / raadwoord.length() + 1;
                     // de mes mag niet lager zijn dan 195
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
@@ -313,7 +325,11 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public boolean gameOver() {
+    public boolean gameLost() {
+        return foutGeradenLetters.size() == raadwoord.length();
+    }
+
+    public boolean gameWon() {
         for (char c : raadwoord.toLowerCase().toCharArray()) {
             if (!goedGeradenLetters.contains(c)) {
                 return false;
@@ -326,7 +342,6 @@ public class BasicGame implements GameLoop {
         geradenLetters.clear();
         goedGeradenLetters.clear();
         foutGeradenLetters.clear();
-        woordenlijst.clear();
         vallendeMes = -105;
         reader = new CsvReader(CSVFile);
     }
@@ -342,10 +357,29 @@ public class BasicGame implements GameLoop {
         reader.skipRow();
         reader.setSeparator(',');
         while (reader.loadRow()) {
-            if (reader.getString(0).equals(difficultyToString())) {
-                woordenlijst.add(reader.getString(1));
+            if (reader.getString(0).equals("Easy")){
+                woordenlijstEasy.add(reader.getString(1));
+            }
+            else if(reader.getString(0).equals("Normal"))
+            {
+                woordenlijstNormal.add(reader.getString(1));
+            }
+            else if(reader.getString(0).equals("Hard")){
+                woordenlijstHard.add(reader.getString(1));
             }
         }
     }
+
+    public String kiesRandomWoord(){
+        if (difficulty == EASY) {
+            return woordenlijstEasy.get(SaxionApp.getRandomValueBetween(0, woordenlijstEasy.size() - 1));
+        } else if (difficulty == NORMAL){
+            return woordenlijstNormal.get(SaxionApp.getRandomValueBetween(0, woordenlijstNormal.size() - 1));
+        } else if (difficulty == HARD){
+            return woordenlijstHard.get(SaxionApp.getRandomValueBetween(0, woordenlijstHard.size() - 1));
+        }
+        return "capybara";
+    }
+
 }
 
