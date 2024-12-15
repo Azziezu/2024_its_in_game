@@ -5,6 +5,8 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
@@ -35,8 +37,11 @@ public class BasicGame implements GameLoop {
     String CSVFile = "BasicGame/resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
+    String CSVscore = "BasicGame/resources/score.csv";
+    CsvReader readerscore = new CsvReader(CSVscore);
+
     public static void main(String[] args) {
-        SaxionApp.startGameLoop(new BasicGame(), 900, 900, 40);
+        SaxionApp.startGameLoop(new BasicGame(), 800, 800, 40);
     }
 
     @Override
@@ -58,7 +63,7 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("HARD", "HARD", (width / 3 * 2) + 15, height - 180, width / 3 - 45, 60));
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (width / 2) - 45, 60));
         buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (width / 2) + 15, height - 90, (width / 2) - 45, 60));
-
+        buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, height - 780, width / 3 - 45, 60));
     }
 
     // Slaat invoer van de spelernaam op
@@ -118,11 +123,12 @@ public class BasicGame implements GameLoop {
                     if (gameLost()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
+                            scoreSysteem();
                         }
                     } else if (gameWon()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
-                            players.get(0).score++;
+                            scoreSysteem();
                         }
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
@@ -190,6 +196,10 @@ public class BasicGame implements GameLoop {
                         raadwoord = kiesRandomWoord();
                         currentScreen = GAMESCREEN;
                         break;
+                    case "SAVE": // Handle the SAVE button
+                        savePlayerScore();
+                        toonBericht("Score is opgeslagen!");
+                        break;
                     default:
                         break;
                 }
@@ -207,6 +217,7 @@ public class BasicGame implements GameLoop {
     public void drawStartScreen() {
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
+        SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
         drawPlayerName();
 
@@ -357,27 +368,46 @@ public class BasicGame implements GameLoop {
         reader.skipRow();
         reader.setSeparator(',');
         while (reader.loadRow()) {
-            if (reader.getString(0).equals("Easy")){
+            if (reader.getString(0).equals("Easy")) {
                 woordenlijstEasy.add(reader.getString(1));
-            }
-            else if(reader.getString(0).equals("Normal"))
-            {
+            } else if (reader.getString(0).equals("Normal")) {
                 woordenlijstNormal.add(reader.getString(1));
-            }
-            else if(reader.getString(0).equals("Hard")){
+            } else if (reader.getString(0).equals("Hard")) {
                 woordenlijstHard.add(reader.getString(1));
             }
         }
     }
 
-    public String kiesRandomWoord(){
+    public String kiesRandomWoord() {
         if (difficulty == EASY) {
             return woordenlijstEasy.get(SaxionApp.getRandomValueBetween(0, woordenlijstEasy.size() - 1));
-        } else if (difficulty == NORMAL){
+        } else if (difficulty == NORMAL) {
             return woordenlijstNormal.get(SaxionApp.getRandomValueBetween(0, woordenlijstNormal.size() - 1));
-        } else if (difficulty == HARD){
+        } else if (difficulty == HARD) {
             return woordenlijstHard.get(SaxionApp.getRandomValueBetween(0, woordenlijstHard.size() - 1));
         }
         return "capybara";
+    }
+
+    public void scoreSysteem() {
+        if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
+            players.get(0).score -= 1;
+        } else if (gameLost() && difficulty == HARD) {
+            players.get(0).score -= 3;
+        } else if (gameWon() && difficulty == EASY) {
+            players.get(0).score++;
+        } else if (gameWon() && difficulty == NORMAL) {
+            players.get(0).score += 2;
+        } else if (gameWon() && difficulty == HARD) {
+            players.get(0).score += 3;
+        }
+    }
+
+    public void savePlayerScore() {
+        try (FileWriter fw = new FileWriter("BasicGame/resources/score.csv", true)) {
+            fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
+        } catch (IOException e) {
+            SaxionApp.printLine("Error saving score");
+        }
     }
 }
