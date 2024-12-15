@@ -37,7 +37,7 @@ public class BasicGame implements GameLoop {
     String CSVFile = "BasicGame/resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
-    String CSVscore = "BasicGame/resources/score.csv";
+    String CSVscore = "BasicGame/resources/score.csv"; // Inlezen CSV bestand van score
     CsvReader readerscore = new CsvReader(CSVscore);
 
     public static void main(String[] args) {
@@ -123,12 +123,12 @@ public class BasicGame implements GameLoop {
                     if (gameLost()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
-                            scoreSysteem();
+                            scoreSysteem(); // Min punten gebaseerd op moeilijkheid
                         }
                     } else if (gameWon()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
-                            scoreSysteem();
+                            scoreSysteem(); // Plus punten gebaseerd op moeilijkheid
                         }
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
@@ -310,7 +310,7 @@ public class BasicGame implements GameLoop {
     }
 
     public void registreerIngevoerdeLetters(char ingevoerdeLetter) {
-        // Als ingevoerde letter een letter is
+        // Als ingevoerde letter een letter is dan
         if (Character.isLetter(ingevoerdeLetter)) {
             // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
             ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
@@ -389,7 +389,7 @@ public class BasicGame implements GameLoop {
         return "capybara";
     }
 
-    public void scoreSysteem() {
+    public void scoreSysteem() {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
         if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
             players.get(0).score -= 1;
         } else if (gameLost() && difficulty == HARD) {
@@ -403,10 +403,11 @@ public class BasicGame implements GameLoop {
         }
     }
 
-    public void savePlayerScore() {
+    public void savePlayerScore() {     // Slaat score van player op
+        // Slaat de naam en de score van speler op in het bestand score.csv met komma etc
         try (FileWriter fw = new FileWriter("BasicGame/resources/score.csv", true)) {
             fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
-        } catch (IOException e) {
+        } catch (IOException e) {       // Error wanneer het niet is gelukt
             SaxionApp.printLine("Error saving score");
         }
     }
