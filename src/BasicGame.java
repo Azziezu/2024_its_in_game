@@ -232,8 +232,8 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Je score: " + players.get(0).score, 20, 50, 24);
         letterInvoeren();
         drawRaadWoord();
-        if (gameWon()) {
-            SaxionApp.drawImage("resources/Fransvlag.png",500,500,400,400);
+        if (gameWon() ) {
+            SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
             SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
         } else if (gameLost()) {
