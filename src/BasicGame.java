@@ -34,10 +34,10 @@ public class BasicGame implements GameLoop {
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
 
-    String CSVFile = "BasicGame/resources/FranseWoorden.csv";
+    String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
-    String CSVscore = "BasicGame/resources/score.csv"; // Inlezen CSV bestand van score
+    String CSVscore = "resources/score.csv"; // Inlezen CSV bestand van score
     CsvReader readerscore = new CsvReader(CSVscore);
 
     public static void main(String[] args) {
@@ -233,6 +233,7 @@ public class BasicGame implements GameLoop {
         letterInvoeren();
         drawRaadWoord();
         if (gameWon()) {
+            
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
             SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
         } else if (gameLost()) {
@@ -283,14 +284,14 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Voer een letter in: ", 20, 80, 30); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 20, 110, 20); // Toon de geraden letters tekst
         //laat de Guillotine zien
-        SaxionApp.drawImage("BasicGame/Resources/Guillotine.png", 100, -100, 800, 800);
+        SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
 
         //De mes van de guilltine is zichtbaar
-        SaxionApp.drawImage("BasicGame/Resources/mes.png", 101, vallendeMes, 800, 680);
+        SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
         //De mes van de guilltine is zichtbaar
 
         //  capybarahoofd is zichtbaar.
-        SaxionApp.drawImage("BasicGame/Resources/Capybarahoofd.png", 65, 80, 825, 775);
+        SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
 
     }
 
@@ -405,7 +406,7 @@ public class BasicGame implements GameLoop {
 
     public void savePlayerScore() {     // Slaat score van player op
         // Slaat de naam en de score van speler op in het bestand score.csv met komma etc
-        try (FileWriter fw = new FileWriter("BasicGame/resources/score.csv", true)) {
+        try (FileWriter fw = new FileWriter("resources/score.csv", true)) {
             fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
         } catch (IOException e) {       // Error wanneer het niet is gelukt
             SaxionApp.printLine("Error saving score");
