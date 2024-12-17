@@ -215,6 +215,7 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawStartScreen() {
+        SaxionApp.drawImage("resources/bestorming.png",0,0,800,800);
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
@@ -227,13 +228,18 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
+        if (gameWon()||gameLost()){
+            SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
+        }
+        else {
+            SaxionApp.drawImage("resources/opstand.jpg",0,0,800,800);
+        }
         SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
         SaxionApp.drawText("Speler: " + players.get(0).name, 20, 20, 24);
         SaxionApp.drawText("Je score: " + players.get(0).score, 20, 50, 24);
         letterInvoeren();
         drawRaadWoord();
         if (gameWon() ) {
-            SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
             SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
         } else if (gameLost()) {
