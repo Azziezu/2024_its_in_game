@@ -33,6 +33,9 @@ public class BasicGame implements GameLoop {
     ArrayList<Character> foutGeradenLetters = new ArrayList<>();
     String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
     long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
+    Player player1;
+    Player player2;
+    boolean tweeSpelers = false;
 
     String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
