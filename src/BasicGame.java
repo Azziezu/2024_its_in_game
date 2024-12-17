@@ -271,12 +271,10 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
         letterInvoeren();
         drawRaadWoord();
-        if (tweeSpelers) {
-            for (int i = 0; i < players.size(); i++) {
-                SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-                SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
-                SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
-            }
+        for (int i = 0; i < players.size(); i++) {
+            SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
+            SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
+            SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
         }
         if (gameWon()) {
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
@@ -288,12 +286,10 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawEndScreen() {
-        if (tweeSpelers) {
-            for (int i = 0; i < players.size(); i++) {
-                SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-                SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
-                SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
-            }
+        for (int i = 0; i < players.size(); i++) {
+            SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
+            SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
+            SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
         }
         SaxionApp.drawText("Spel voorbij!", 20, 80, 24);
         SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 120, 24);
