@@ -70,7 +70,7 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("HARD", "HARD", (height / 3 * 2) + 15, height - 180, height / 3 - 45, 60));
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (height / 2) - 45, 60));
         buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (height / 2) + 15, height - 90, (height / 2) - 45, 60));
-        buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, height - 780, height / 3 - 45, 60));
+        buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
     }
 
     // Slaat invoer van de spelernaam op
