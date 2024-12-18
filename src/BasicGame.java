@@ -186,13 +186,16 @@ public class BasicGame implements GameLoop {
     public void buttonEvent(ArrayList<Button> buttons) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
+                SaxionApp.playSound("resources/Mouse Click.wav");
                 switch (button.action) {
                     case "1PLAYER":
                         if (tweeSpelers) {
                             tweeSpelers = false;
                             player2.active = false;
                             for (Button button2 : buttons) {
-                                if (button2.action.equals("EDITP2")) { button2.active = false; }
+                                if (button2.action.equals("EDITP2")) {
+                                    button2.active = false;
+                                }
                             }
                         }
                         break;
@@ -201,7 +204,9 @@ public class BasicGame implements GameLoop {
                             tweeSpelers = true;
                             player2.active = true;
                             for (Button button2 : buttons) {
-                                if (button2.action.equals("EDITP2")) { button2.active = true; }
+                                if (button2.action.equals("EDITP2")) {
+                                    button2.active = true;
+                                }
                             }
                         }
                         break;
@@ -246,10 +251,11 @@ public class BasicGame implements GameLoop {
                 && mouseX < button.x + button.width
                 && mouseY > button.y
                 && mouseY < button.y + button.height;
+
     }
 
     public void drawStartScreen() {
-        SaxionApp.drawImage("resources/bestorming.png",0,0,800,800);
+        SaxionApp.drawImage("resources/bestorming.png", 0, 0, 800, 800);
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
@@ -262,11 +268,10 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        if (gameWon()||gameLost()){
+        if (gameWon() || gameLost()) {
             SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
-        }
-        else {
-            SaxionApp.drawImage("resources/opstand.jpg",0,0,800,800);
+        } else {
+            SaxionApp.drawImage("resources/opstand.jpg", 0, 0, 800, 800);
         }
         SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
         letterInvoeren();
@@ -276,186 +281,190 @@ public class BasicGame implements GameLoop {
             SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
             SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
         }
-        if (gameWon()) {
-            SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
-            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
-        } else if (gameLost()) {
-            SaxionApp.drawText("Je hebt verloren...", 30, 300, 24);
-            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
-        }
-    }
+            if (gameWon()) {
 
-    public void drawEndScreen() {
-        for (int i = 0; i < players.size(); i++) {
-            SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-            SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
-            SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
-        }
-        SaxionApp.drawText("Spel voorbij!", 20, 80, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 120, 24);
-    }
-
-    public void drawRaadWoord() {
-        for (int i = 0; i < raadwoord.length(); i++) {
-            int spacing = (height - 200) / raadwoord.length();
-            if (goedGeradenLetters.contains(raadwoord.toLowerCase().charAt(i))) {
-                SaxionApp.drawText("" + raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
-            } else {
-                SaxionApp.drawText("_", 100 + (spacing * i), height - 100, 24);
+                SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
+                SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
+            } else if (gameLost()) {
+                SaxionApp.drawText("Je hebt verloren...", 30, 300, 24);
+                SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
             }
         }
-    }
 
-    public void naamInvoeren(char letter, Player player) {
-        // Onthoud het ingedrukte woord
-        boolean isLetter = Character.isLetter(letter);
-        if (isLetter || letter == ' ') {
-            if (!player.name.isEmpty()) {
-                letter = Character.toLowerCase(letter);
+        public void drawEndScreen () {
+            for (int i = 0; i < players.size(); i++) {
+                SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
+                SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
+                SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
             }
-            player.name = player.name + letter;
+            SaxionApp.drawText("Spel voorbij!", 20, 80, 24);
+            SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 120, 24);
         }
-    }
 
-    public String removeLastCharFromString(String string) {
-        return string.substring(0, string.length() - 1);
-    }
-
-    public void toonBericht(String tekst) {
-        tijdelijkBericht = tekst;                           // Tekst
-        berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
-    }
-
-    public void letterInvoeren() {
-        SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
-        SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
-        //laat de Guillotine zien
-        SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
-
-        //De mes van de guilltine is zichtbaar
-        SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
-        //De mes van de guilltine is zichtbaar
-
-        //  capybarahoofd is zichtbaar.
-        SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
-
-    }
-
-    public void editPlayerName(int playerId) {
-        for (Player player : players) {
-            player.editable = player.id == playerId;
-        }
-    }
-
-    public String difficultyToString() {
-        return switch (difficulty) {
-            case EASY -> "Easy";
-            case NORMAL -> "Normal";
-            case HARD -> "Hard";
-            default -> "No difficulty set";
-        };
-    }
-
-    public void registreerIngevoerdeLetters(char ingevoerdeLetter) {
-        // Als ingevoerde letter een letter is dan
-        if (Character.isLetter(ingevoerdeLetter)) {
-            // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
-            ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
-
-            // Checkt of geraden letter al eerder geraden is met contains
-            if (geradenLetters.contains(ingevoerdeLetter)) {
-                toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
-            } else {
-                geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
-
-                // Veranderd char in string omdat contains alleen string herkend
-                if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
-                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
-                    goedGeradenLetters.add(ingevoerdeLetter);
+        public void drawRaadWoord () {
+            for (int i = 0; i < raadwoord.length(); i++) {
+                int spacing = (height - 200) / raadwoord.length();
+                if (goedGeradenLetters.contains(raadwoord.toLowerCase().charAt(i))) {
+                    SaxionApp.drawText("" + raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
                 } else {
-                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
-                    foutGeradenLetters.add(ingevoerdeLetter);
-                    // de mes valt 50 pixels naar beneden
-                    vallendeMes += 300 / raadwoord.length() + 1;
-                    // de mes mag niet lager zijn dan 195
-                    if (vallendeMes > 195) {
-                        // De mes blijft op de postie 195
-                        vallendeMes = 195;
-                    }
+                    SaxionApp.drawText("_", 100 + (spacing * i), height - 100, 24);
                 }
             }
-        } else {
-            // Kan alleen een letter invoeren, geen andere tekens of cijfers
-            toonBericht("Voer alstublieft alleen een letter in.");
         }
-    }
 
-    public boolean gameLost() {
-        return foutGeradenLetters.size() == raadwoord.length();
-    }
-
-    public boolean gameWon() {
-        for (char c : raadwoord.toLowerCase().toCharArray()) {
-            if (!goedGeradenLetters.contains(c)) {
-                return false;
+        public void naamInvoeren ( char letter, Player player){
+            // Onthoud het ingedrukte woord
+            boolean isLetter = Character.isLetter(letter);
+            if (isLetter || letter == ' ') {
+                if (!player.name.isEmpty()) {
+                    letter = Character.toLowerCase(letter);
+                }
+                player.name = player.name + letter;
             }
         }
-        return true;
-    }
 
-    public void resetGame() {
-        geradenLetters.clear();
-        goedGeradenLetters.clear();
-        foutGeradenLetters.clear();
-        vallendeMes = -105;
-        reader = new CsvReader(CSVFile);
-    }
+        public String removeLastCharFromString (String string){
+            return string.substring(0, string.length() - 1);
+        }
 
-    public void csvReader() {
-        reader.skipRow();
-        reader.setSeparator(',');
-        while (reader.loadRow()) {
-            if (reader.getString(0).equals("Easy")) {
-                woordenlijstEasy.add(reader.getString(1));
-            } else if (reader.getString(0).equals("Normal")) {
-                woordenlijstNormal.add(reader.getString(1));
-            } else if (reader.getString(0).equals("Hard")) {
-                woordenlijstHard.add(reader.getString(1));
+        public void toonBericht (String tekst){
+            tijdelijkBericht = tekst;                           // Tekst
+            berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
+        }
+
+        public void letterInvoeren () {
+            SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
+            SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
+            //laat de Guillotine zien
+            SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
+
+            //De mes van de guilltine is zichtbaar
+            SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
+            //De mes van de guilltine is zichtbaar
+
+            //  capybarahoofd is zichtbaar.
+            SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
+
+        }
+
+        public void editPlayerName ( int playerId){
+            for (Player player : players) {
+                player.editable = player.id == playerId;
+            }
+        }
+
+        public String difficultyToString () {
+            return switch (difficulty) {
+                case EASY -> "Easy";
+                case NORMAL -> "Normal";
+                case HARD -> "Hard";
+                default -> "No difficulty set";
+            };
+        }
+
+        public void registreerIngevoerdeLetters ( char ingevoerdeLetter){
+            // Als ingevoerde letter een letter is dan
+            if (Character.isLetter(ingevoerdeLetter)) {
+                // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
+                ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
+
+                // Checkt of geraden letter al eerder geraden is met contains
+                if (geradenLetters.contains(ingevoerdeLetter)) {
+                    toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
+                } else {
+                    geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
+
+                    // Veranderd char in string omdat contains alleen string herkend
+                    if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
+                        toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                        goedGeradenLetters.add(ingevoerdeLetter);
+                    } else {
+                        toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                        foutGeradenLetters.add(ingevoerdeLetter);
+                        // de mes valt 50 pixels naar beneden
+                        vallendeMes += 300 / raadwoord.length() + 1;
+                        SaxionApp.playSound("resources/Knife_attack-2.wav");
+                        // de mes mag niet lager zijn dan 195
+                        if (vallendeMes > 195) {
+                            // De mes blijft op de postie 195
+                            vallendeMes = 195;
+                            SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
+                        }
+                    }
+                }
+            } else {
+                // Kan alleen een letter invoeren, geen andere tekens of cijfers
+                toonBericht("Voer alstublieft alleen een letter in.");
+            }
+        }
+
+        public boolean gameLost () {
+            return foutGeradenLetters.size() == raadwoord.length();
+        }
+
+        public boolean gameWon () {
+            for (char c : raadwoord.toLowerCase().toCharArray()) {
+                if (!goedGeradenLetters.contains(c)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void resetGame () {
+            geradenLetters.clear();
+            goedGeradenLetters.clear();
+            foutGeradenLetters.clear();
+            vallendeMes = -105;
+            reader = new CsvReader(CSVFile);
+        }
+
+        public void csvReader () {
+            reader.skipRow();
+            reader.setSeparator(',');
+            while (reader.loadRow()) {
+                if (reader.getString(0).equals("Easy")) {
+                    woordenlijstEasy.add(reader.getString(1));
+                } else if (reader.getString(0).equals("Normal")) {
+                    woordenlijstNormal.add(reader.getString(1));
+                } else if (reader.getString(0).equals("Hard")) {
+                    woordenlijstHard.add(reader.getString(1));
+                }
+            }
+        }
+
+        public String kiesRandomWoord () {
+            if (difficulty == EASY) {
+                return woordenlijstEasy.get(SaxionApp.getRandomValueBetween(0, woordenlijstEasy.size() - 1));
+            } else if (difficulty == NORMAL) {
+                return woordenlijstNormal.get(SaxionApp.getRandomValueBetween(0, woordenlijstNormal.size() - 1));
+            } else if (difficulty == HARD) {
+                return woordenlijstHard.get(SaxionApp.getRandomValueBetween(0, woordenlijstHard.size() - 1));
+            }
+            return "Capybara";
+        }
+
+        public void scoreSysteem () {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
+            if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
+                players.get(0).score -= 1;
+            } else if (gameLost() && difficulty == HARD) {
+                players.get(0).score -= 3;
+            } else if (gameWon() && difficulty == EASY) {
+                players.get(0).score++;
+            } else if (gameWon() && difficulty == NORMAL) {
+                players.get(0).score += 2;
+            } else if (gameWon() && difficulty == HARD) {
+                players.get(0).score += 3;
+            }
+        }
+
+        public void savePlayerScore () {     // Slaat score van player op
+            // Slaat de naam en de score van speler op in het bestand score.csv met komma etc
+            try (FileWriter fw = new FileWriter("resources/score.csv", true)) {
+                fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
+            } catch (IOException e) {       // Error wanneer het niet is gelukt
+                SaxionApp.printLine("Error saving score");
             }
         }
     }
 
-    public String kiesRandomWoord() {
-        if (difficulty == EASY) {
-            return woordenlijstEasy.get(SaxionApp.getRandomValueBetween(0, woordenlijstEasy.size() - 1));
-        } else if (difficulty == NORMAL) {
-            return woordenlijstNormal.get(SaxionApp.getRandomValueBetween(0, woordenlijstNormal.size() - 1));
-        } else if (difficulty == HARD) {
-            return woordenlijstHard.get(SaxionApp.getRandomValueBetween(0, woordenlijstHard.size() - 1));
-        }
-        return "Capybara";
-    }
-
-    public void scoreSysteem() {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
-        if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
-            players.get(0).score -= 1;
-        } else if (gameLost() && difficulty == HARD) {
-            players.get(0).score -= 3;
-        } else if (gameWon() && difficulty == EASY) {
-            players.get(0).score++;
-        } else if (gameWon() && difficulty == NORMAL) {
-            players.get(0).score += 2;
-        } else if (gameWon() && difficulty == HARD) {
-            players.get(0).score += 3;
-        }
-    }
-
-    public void savePlayerScore() {     // Slaat score van player op
-        // Slaat de naam en de score van speler op in het bestand score.csv met komma etc
-        try (FileWriter fw = new FileWriter("resources/score.csv", true)) {
-            fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
-        } catch (IOException e) {       // Error wanneer het niet is gelukt
-            SaxionApp.printLine("Error saving score");
-        }
-    }
-}
