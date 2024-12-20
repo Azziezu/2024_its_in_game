@@ -272,16 +272,12 @@ public class BasicGame implements GameLoop {
         if (gameWon()) {
             SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
         } else if (gameLost()) {
-
-            SaxionApp.drawImage("resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
-            SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 200, 180);
-            SaxionApp.drawImage("resources/mes.png", 102, 155, 800, 680);
+            SaxionApp.drawImage("resources/onthoofdecapybara.png", 100, -100, 800, 800);
         } else {
             SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
-            SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
             SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
         }
-
+        SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
 
         SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
         letterInvoeren();
@@ -447,19 +443,20 @@ public class BasicGame implements GameLoop {
             return "Capybara";
         }
 
-        public void scoreSysteem () {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
-            if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
-                players.get(0).score -= 1;
-            } else if (gameLost() && difficulty == HARD) {
-                players.get(0).score -= 3;
-            } else if (gameWon() && difficulty == EASY) {
-                players.get(0).score++;
-            } else if (gameWon() && difficulty == NORMAL) {
-                players.get(0).score += 2;
-            } else if (gameWon() && difficulty == HARD) {
-                players.get(0).score += 3;
-            }
-            if (players.get(0).score < 0) { players.get(0).score = 0; }
+    public void scoreSysteem() {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
+        if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
+            players.get(0).score -= 1;
+        } else if (gameLost() && difficulty == HARD) {
+            players.get(0).score -= 3;
+        } else if (gameWon() && difficulty == EASY) {
+            players.get(0).score++;
+        } else if (gameWon() && difficulty == NORMAL) {
+            players.get(0).score += 2;
+        } else if (gameWon() && difficulty == HARD) {
+            players.get(0).score += 3;
+        }
+        if (players.get(0).score < 0) {
+            players.get(0).score = 0;
         }
 
         public void savePlayerScore () {     // Slaat score van player op

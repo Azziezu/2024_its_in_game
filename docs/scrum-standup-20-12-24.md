@@ -37,7 +37,7 @@ Onthoofde capybara verwerken wanneer het spel verloren is.
 #### Azra
 \-
 #### Bart
-\-
+Bart gaat verder met het uitwerken van een twee speler spel variant.
 #### Dean
 \-
 
