@@ -320,6 +320,7 @@ public class BasicGame implements GameLoop {
                     letter = Character.toLowerCase(letter);
                 }
                 player.name = player.name + letter;
+                
             }
         }
 
@@ -389,6 +390,7 @@ public class BasicGame implements GameLoop {
                             // De mes blijft op de postie 195
                             vallendeMes = 195;
                             SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
+                            SaxionApp.drawImage("resources/onthoofdcapybarra.png", 100, -100, 800, 800);
                         }
                     }
                 }
