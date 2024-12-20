@@ -268,11 +268,17 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        if (gameWon() || gameLost()) {
+        SaxionApp.drawImage("resources/opstand.jpg", 0, 0, 800, 800);
+        if (gameWon()) {
             SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
+        } else if (gameLost()) {
+            SaxionApp.drawImage("resources/onthoofdecapybara.png", 100, -100, 800, 800);
         } else {
-            SaxionApp.drawImage("resources/opstand.jpg", 0, 0, 800, 800);
+            SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
+            SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
         }
+        SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
+
         SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
         letterInvoeren();
         drawRaadWoord();
@@ -336,15 +342,7 @@ public class BasicGame implements GameLoop {
         public void letterInvoeren () {
             SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
             SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
-            //laat de Guillotine zien
-            SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
 
-            //De mes van de guilltine is zichtbaar
-            SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 800, 680);
-            //De mes van de guilltine is zichtbaar
-
-            //  capybarahoofd is zichtbaar.
-            SaxionApp.drawImage("resources/Capybarahoofd.png", 65, 80, 825, 775);
 
         }
 
@@ -390,7 +388,6 @@ public class BasicGame implements GameLoop {
                             // De mes blijft op de postie 195
                             vallendeMes = 195;
                             SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
-                            SaxionApp.drawImage("resources/onthoofdcapybarra.png", 100, -100, 800, 800);
                         }
                     }
                 }
