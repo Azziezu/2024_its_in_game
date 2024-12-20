@@ -455,6 +455,7 @@ public class BasicGame implements GameLoop {
             } else if (gameWon() && difficulty == HARD) {
                 players.get(0).score += 3;
             }
+            if (players.get(0).score < 0) { players.get(0).score = 0; }
         }
 
         public void savePlayerScore () {     // Slaat score van player op
