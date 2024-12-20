@@ -274,7 +274,7 @@ public class BasicGame implements GameLoop {
         } else if (gameLost()) {
 
             SaxionApp.drawImage("resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
-            SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 220, 180);
+            SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 200, 180);
             SaxionApp.drawImage("resources/mes.png", 102, 155, 800, 680);
         } else {
             SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
