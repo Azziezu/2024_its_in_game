@@ -38,11 +38,11 @@ Bezig met de CSV readers en de verschillende moeilijkheidsgraden.
 #### Wat ging goed?
 Het gaat nu weer goed met de random worden pakken. Bart helpt hier mee.
 #### Wat ging niet goed?
--
+/-
 
 # Nieuwe taken
 #### Abdi
--
+/-
 
 #### Azra
 Azra gaat bezig met de highscore weergeven en wil ook verder gaan

@@ -33,11 +33,11 @@ Je kan nu selecteren of je 1 of 2 spelers wilt.
 Er moest veel code herschreven worden dus het lukte niet helemaal.
 
 #### Dean
--
+/-
 #### Wat ging goed?
--
+/-
 #### Wat ging niet goed?
--
+/-
 
 # Nieuwe taken
 #### Abdi
@@ -52,3 +52,4 @@ Bart gaat verder met de code herschrijven etc en een tweede speler
 scherm aanmaken.
 
 #### Dean
+/-

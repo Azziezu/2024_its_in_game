@@ -255,7 +255,7 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawStartScreen() {
-        SaxionApp.drawImage("resources/bestorming.png", 0, 0, 800, 800);
+        SaxionApp.drawImage("resources/bestorming.png",0,0,800,800);
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
@@ -346,8 +346,6 @@ public class BasicGame implements GameLoop {
     public void letterInvoeren() {
         SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
         SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
-
-
     }
 
     public void editPlayerName(int playerId) {
@@ -472,5 +470,14 @@ public class BasicGame implements GameLoop {
             SaxionApp.printLine("Error saving score");
         }
     }
-}
 
+    public void sorterenScore() {       // Sorteert de score
+
+
+        // Lege lijst maken
+        // Lijst moet naam en score van speler opslaan
+        // Lijst moet een loop hebben en zoeken of de nieuwe score het hoogst is
+        // Als nieuwe score het hoogst is boven de laatste score plaatsen, anders er onder als het lager is
+        // Lijst verbinden met CSV bestand, dus in CSV bestand opslaan en sorteren.
+    }
+}

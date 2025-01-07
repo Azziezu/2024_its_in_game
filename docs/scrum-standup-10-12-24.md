@@ -22,18 +22,18 @@ Haast alles ging wel goed
 -
 
 #### Bart
--
+/-
 #### Wat ging goed?
--
+/-
 #### Wat ging niet goed?
--
+/-
 
 #### Dean
--
+/-
 #### Wat ging goed?
--
+/-
 #### Wat ging niet goed?
--
+/-
 
 # Nieuwe taken
 #### Abdi
@@ -46,8 +46,8 @@ Azra gaat bezig met de highscore weergeven en wil ook verder gaan
 met het inlezen van de highscore in een bestand.
 
 #### Bart
--
+/-
 
 #### Dean
--
+/-
 
