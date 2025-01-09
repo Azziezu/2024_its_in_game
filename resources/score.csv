@@ -1,11 +1,8 @@
-name,scoreTest,2
- Test,1
- Test,4
- Test,3
- Azra,5
- Hallo,3
- Azratest,6
- Azratest,6
- Speler 1,0
- Speler 1,0
- Speler 1,2
+name,score
+Speler 1,18
+Speler 1,15
+Speler 1,15
+Speler 1,6
+Speler 1,1
+Speler 1,0
+Speler 1,0
