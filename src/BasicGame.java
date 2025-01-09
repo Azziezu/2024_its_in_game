@@ -493,7 +493,6 @@ public class BasicGame implements GameLoop {
         sorteerScoreNaarCsv(scoreLijst);    // Functie die de gesorteerde lijst naar het CSV-bestand terugstuurt
     }
 
-
     public void sorteerScoreNaarCsv(ArrayList<Player> gesoorteerdeSpelers) {    // Schrijft en sorteert het naar een bestand
         try (FileWriter fw = new FileWriter(CSVscore, false)) {
 
@@ -509,4 +508,3 @@ public class BasicGame implements GameLoop {
         }
     }
 }
-
