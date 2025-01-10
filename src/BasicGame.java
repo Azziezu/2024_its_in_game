@@ -37,10 +37,10 @@ public class BasicGame implements GameLoop {
     Player player2;
     boolean tweeSpelers = false;
 
-    String CSVFile = "BasicGame/resources/FranseWoorden.csv";
+    String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
-    String CSVscore = "BasicGame/resources/score.csv"; // Inlezen CSV bestand van score
+    String CSVscore = "resources/score.csv"; // Inlezen CSV bestand van score
     CsvReader readerscore = new CsvReader(CSVscore);
 
     public static void main(String[] args) {
@@ -186,7 +186,7 @@ public class BasicGame implements GameLoop {
     public void buttonEvent(ArrayList<Button> buttons) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
-                SaxionApp.playSound("BasicGame/resources/Mouse Click.wav");
+                SaxionApp.playSound("resources/Mouse Click.wav");
                 switch (button.action) {
                     case "1PLAYER":
                         if (tweeSpelers) {
@@ -256,7 +256,7 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawStartScreen() {
-        SaxionApp.drawImage("BasicGame/resources/bestorming.png", 0, 0, 800, 800);
+        SaxionApp.drawImage("resources/bestorming.png", 0, 0, 800, 800);
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
@@ -269,18 +269,18 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        SaxionApp.drawImage("BasicGame/resources/opstand.jpg", 0, 0, 800, 800);
+        SaxionApp.drawImage("resources/opstand.jpg", 0, 0, 800, 800);
         if (gameWon()) {
-            SaxionApp.drawImage("BasicGame/resources/Franchflagg.jpg", 0, 0, 800, 900);
+            SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
         } else if (gameLost()) {
-            SaxionApp.drawImage("BasicGame/resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
-            SaxionApp.drawImage("BasicGame/resources/doodcapybarra.png", 340, 470, 230, 180);
-            SaxionApp.drawImage("BasicGame/resources/mes.png", 76, 58, 850, 800);
+            SaxionApp.drawImage("resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
+            SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 230, 180);
+            SaxionApp.drawImage("resources/mes.png", 76, 58, 850, 800);
 
         } else {
-            SaxionApp.drawImage("BasicGame/resources/Guillotine.png", 100, -100, 800, 800);
-            SaxionApp.drawImage("BasicGame/resources/Capybarahoofd.png", 50, 80, 850, 775);
-            SaxionApp.drawImage("BasicGame/resources/mes.png", 101, vallendeMes, 798, 600);
+            SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
+            SaxionApp.drawImage("resources/Capybarahoofd.png", 50, 80, 850, 775);
+            SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 798, 600);
         }
 
 
@@ -385,12 +385,12 @@ public class BasicGame implements GameLoop {
                     foutGeradenLetters.add(ingevoerdeLetter);
                     // de mes valt 50 pixels naar beneden
                     vallendeMes += 300 / raadwoord.length() + 1;
-                    SaxionApp.playSound("BasicGame/resources/Knife_attack-2.wav");
+                    SaxionApp.playSound("resources/Knife_attack-2.wav");
                     // de mes mag niet lager zijn dan 195
                     if (vallendeMes > 195) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
-                        SaxionApp.playSound("BasicGame/resources/Thump-Body-Hit_TTX042901-2.wav");
+                        SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
                     }
                 }
             }
@@ -465,7 +465,7 @@ public class BasicGame implements GameLoop {
 
     public void savenPlayerScore() {     // Slaat score van player op
         // Slaat de naam en de score van speler op in het bestand score.csv met komma etc
-        try (FileWriter fw = new FileWriter("BasicGame/resources/score.csv", true)) {
+        try (FileWriter fw = new FileWriter("resources/score.csv", true)) {
             fw.write(" " + players.get(0).name + "," + players.get(0).score + "\n");
         } catch (IOException e) {       // Error wanneer het niet is gelukt
             SaxionApp.printLine("Error saving score");
@@ -487,7 +487,6 @@ public class BasicGame implements GameLoop {
 
             scoreLijst.add(nieuweSpeler); // Voegt nieuwe speler toe aan de score lijst
         }
-
 
         scoreLijst.sort((p1, p2) -> p2.score - p1.score);   // Sorteert de spelers op basis van hun score in aflopende volgorde
         sorteerScoreNaarCsv(scoreLijst);    // Functie die de gesorteerde lijst naar het CSV-bestand terugstuurt
