@@ -20,7 +20,6 @@ public class BasicGame implements GameLoop {
     static final int HARD = 3;
 
     int mouseX, mouseY, width, height, currentScreen, difficulty;
-    // Y cordinator om de mes te laten vallen
     int vallendeMes = -105;
     String raadwoord;
     ArrayList<String> woordenlijstEasy = new ArrayList<>();
@@ -28,11 +27,11 @@ public class BasicGame implements GameLoop {
     ArrayList<String> woordenlijstHard = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
-    ArrayList<Character> geradenLetters = new ArrayList<>(); // Houdt bij welke letters al geraden zijn
+    ArrayList<Character> geradenLetters = new ArrayList<>();
     ArrayList<Character> goedGeradenLetters = new ArrayList<>();
     ArrayList<Character> foutGeradenLetters = new ArrayList<>();
-    String tijdelijkBericht = "";       // Bericht dat op het scherm weergegeven moet worden
-    long berichtTijd = 0;               // Timer voor het bericht, hoe lang het zichtbaar blijft
+    String tijdelijkBericht = "";
+    long berichtTijd = 0;
     Player player1;
     Player player2;
     boolean tweeSpelers = false;
@@ -40,7 +39,7 @@ public class BasicGame implements GameLoop {
     String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
-    String CSVscore = "resources/score.csv"; // Inlezen CSV bestand van score
+    String CSVscore = "resources/score.csv";
     CsvReader readerscore = new CsvReader(CSVscore);
 
     public static void main(String[] args) {
@@ -48,7 +47,7 @@ public class BasicGame implements GameLoop {
     }
 
     @Override
-    public void init() { // Voert eenmalig dingen uit aan het begin van het spel
+    public void init() {
         raadwoord = "Capybara";
         currentScreen = STARTSCREEN;
         difficulty = NORMAL;
@@ -61,10 +60,10 @@ public class BasicGame implements GameLoop {
         players.add(player1);
         players.add(player2);
 
-        buttonsStartScreen.add(new Button("1 SPELER", "1PLAYER", 30, 400, (height / 2) - 45, 60));
-        buttonsStartScreen.add(new Button("2 SPELERS", "2PLAYER", (height / 2) + 15, 400, (height / 2) - 45, 60));
+        // buttonsStartScreen.add(new Button("1 SPELER", "1PLAYER", 30, 400, (height / 2) - 45, 60));
+        // buttonsStartScreen.add(new Button("2 SPELERS", "2PLAYER", (height / 2) + 15, 400, (height / 2) - 45, 60));
         buttonsStartScreen.add(new Button("EDIT", "EDITP1", 30, 290, 60, 30, Button.ALIGNLEFT, 20));
-        buttonsStartScreen.add(new Button("EDIT", "EDITP2", (height / 2) + 30, 290, 60, 30, Button.ALIGNLEFT, 20, false));
+        // buttonsStartScreen.add(new Button("EDIT", "EDITP2", (height / 2) + 30, 290, 60, 30, Button.ALIGNLEFT, 20, false));
         buttonsStartScreen.add(new Button("EASY", "EASY", 30, height - 180, height / 3 - 45, 60));
         buttonsStartScreen.add(new Button("NORMAL", "NORMAL", (height / 3) + 15, height - 180, height / 3 - 30, 60));
         buttonsStartScreen.add(new Button("HARD", "HARD", (height / 3 * 2) + 15, height - 180, height / 3 - 45, 60));
@@ -73,16 +72,8 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
     }
 
-    // Slaat invoer van de spelernaam op
-    public void drawPlayerName() {
-        SaxionApp.drawText(player1.name, 100, 300, 20);
-        if (tweeSpelers) {
-            SaxionApp.drawText(player2.name, (height / 2) + 100, 300, 20);
-        }
-    }
-
     @Override
-    public void loop() {  // Blijft dingen herhalen gedurende het spel
+    public void loop() {
         SaxionApp.clear();
         switch (currentScreen) {
             case STARTSCREEN:
@@ -133,15 +124,10 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case GAMESCREEN:
-                    if (gameLost()) {
+                    if (gameLost() || gameWon()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                             currentScreen = ENDSCREEN;
-                            scoreSysteem(); // Min punten gebaseerd op moeilijkheid
-                        }
-                    } else if (gameWon()) {
-                        if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
-                            currentScreen = ENDSCREEN;
-                            scoreSysteem(); // Plus punten gebaseerd op moeilijkheid
+                            scoreSysteem();
                         }
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
@@ -149,7 +135,7 @@ public class BasicGame implements GameLoop {
 
                     break;
                 case ENDSCREEN:
-                    if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_R) {
+                    if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
                         currentScreen = STARTSCREEN;
                         resetGame();
                     }
@@ -252,7 +238,6 @@ public class BasicGame implements GameLoop {
                 && mouseX < button.x + button.width
                 && mouseY > button.y
                 && mouseY < button.y + button.height;
-
     }
 
     public void drawStartScreen() {
@@ -261,7 +246,7 @@ public class BasicGame implements GameLoop {
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
         SaxionApp.drawText("Difficulty: " + difficultyToString(), 30, height - 240, 24);
-        drawPlayerName();
+        SaxionApp.drawText(player1.name, 100, 300, 20);
 
         for (Button button : buttonsStartScreen) {
             button.drawButton();
@@ -283,17 +268,15 @@ public class BasicGame implements GameLoop {
             SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 798, 600);
         }
 
+        SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
+        SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
 
-        SaxionApp.drawText("Raad het woord: " + raadwoord, 550, 20, 24);
-        letterInvoeren();
         drawRaadWoord();
         for (int i = 0; i < players.size(); i++) {
             SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-            SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
             SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
         }
         if (gameWon()) {
-
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
             SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
         } else if (gameLost()) {
@@ -305,11 +288,10 @@ public class BasicGame implements GameLoop {
     public void drawEndScreen() {
         for (int i = 0; i < players.size(); i++) {
             SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-            SaxionApp.drawText(players.get(i).name, (i * height) + 30, 60, 24);
             SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
         }
-        SaxionApp.drawText("Spel voorbij!", 20, 80, 24);
-        SaxionApp.drawText("Druk op R om opnieuw te spelen.", 20, 120, 24);
+        SaxionApp.drawText("Spel voorbij!", 30, 80, 24);
+        SaxionApp.drawText("Druk op spatie om opnieuw te spelen.", 30, 120, 24);
     }
 
     public void drawRaadWoord() {
@@ -324,7 +306,6 @@ public class BasicGame implements GameLoop {
     }
 
     public void naamInvoeren(char letter, Player player) {
-        // Onthoud het ingedrukte woord
         boolean isLetter = Character.isLetter(letter);
         if (isLetter || letter == ' ') {
             if (!player.name.isEmpty()) {
@@ -340,13 +321,8 @@ public class BasicGame implements GameLoop {
     }
 
     public void toonBericht(String tekst) {
-        tijdelijkBericht = tekst;                           // Tekst
-        berichtTijd = System.currentTimeMillis() + 2000;    // Laat de tekst 2 seconde staan
-    }
-
-    public void letterInvoeren() {
-        SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24); // Tekst voor letter invoeren
-        SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24); // Toon de geraden letters tekst
+        tijdelijkBericht = tekst;
+        berichtTijd = System.currentTimeMillis() + 2000;
     }
 
     public void editPlayerName(int playerId) {
@@ -446,7 +422,7 @@ public class BasicGame implements GameLoop {
         return "Capybara";
     }
 
-    public void scoreSysteem() {        // Geeft meer/minder punten gebaseerd op moeilijkheidsgraad
+    public void scoreSysteem() {
         if (gameLost() && difficulty == EASY || gameLost() && difficulty == NORMAL) {
             players.get(0).score -= 1;
         } else if (gameLost() && difficulty == HARD) {
