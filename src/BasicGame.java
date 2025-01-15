@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BasicGame implements GameLoop {
-
     static final int STARTSCREEN = 1;
     static final int GAMESCREEN = 2;
     static final int ENDSCREEN = 3;
@@ -70,7 +69,8 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("HARD", "HARD", (height / 3 * 2) + 15, height - 180, height / 3 - 45, 60));
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (height / 2) - 45, 60));
         buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (height / 2) + 15, height - 90, (height / 2) - 45, 60));
-        buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
+        //buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
+        buttonsStartScreen.add(new Button("SAVE EN SLUIT", "SAVE_AND_EXIT", 30, 500, (height / 2) - 45, 60));
         buttonsLeaderBordScreen.add(new Button("Back to menu", "Back to menu", 20, 20, 280, 80));
     }
 
@@ -91,7 +91,7 @@ public class BasicGame implements GameLoop {
                 drawEndScreen();
                 break;
             case LEADERBOARDSCREEN:
-                drawLeaderBoardScreen();
+                toonTop5Scores();
                 break;
             default:
                 break;
@@ -144,7 +144,6 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case LEADERBOARDSCREEN:
-
                     break;
                 default:
                     break;
@@ -223,10 +222,11 @@ public class BasicGame implements GameLoop {
                         }
                         currentScreen = GAMESCREEN;
                         break;
-                    case "SAVE": // Handle the SAVE button
+                    case "SAVE_AND_EXIT": // Handle the SAVE button
                         savenPlayerScore();
                         sorterenScore();
-                        toonBericht("Score is opgeslagen!");
+                        toonBericht("Score is opgeslagen! Spel aluit nu.");
+                        System.exit(0);
                         break;
                     case "LEADERBOARD":
                         currentScreen = LEADERBOARDSCREEN;
@@ -486,16 +486,55 @@ public class BasicGame implements GameLoop {
             for (Player speler : gesoorteerdeSpelers) {
                 fw.write(speler.name + "," + speler.score + "\n");  // Schrijft de naam en speler met een komma ertussen, \n begint een nieuwe regel
             }
-        } catch (IOException e) {      // Pakt fouten op
+        }
+        catch(IOException e) {      // Pakt fouten op
             SaxionApp.printLine("Niet gelukt");
         }
     }
 
-    public void drawLeaderBoardScreen() {
-        for (Button button : buttonsLeaderBordScreen) {
+    public void toonTop5Scores(){
+        // Maakt een nieuwe lijst aan
+        ArrayList<Player> scoreLijst = new ArrayList<>();
+
+        readerscore = new CsvReader(CSVscore);
+        readerscore.setSeparator(',');
+        readerscore.skipRow();
+
+        // CSV reader oproepen met score bestand
+        while(readerscore.loadRow()) {
+            // Naam en score speler ophalen
+            String naam = readerscore.getString(0).trim();
+            int score = Integer.parseInt(readerscore.getString(1).trim());
+
+            // maakt nieuwe soeler object
+            Player speler = new Player(0, naam, false);
+            speler.score = score;
+            // voegt speler toe aan lijst
+            scoreLijst.add(speler);
+        }
+
+        // sorteer functie
+        scoreLijst.sort((p1, p2) -> p2.score - p1.score);
+
+        SaxionApp.clear();
+        SaxionApp.drawText("Top 5 scores!", 350, 60, 40);
+
+        // Bepaald aantal scores dat laten zien moet wordne
+        int aantalScores;
+        if(scoreLijst.size() < 5) {
+            aantalScores = scoreLijst.size();
+        }else {
+            aantalScores = 5;
+        }
+
+        // Loopt door de lijst heen en laat scores op het scherm zien
+        for (int i = 0; i < aantalScores; i++) {
+            Player speler = scoreLijst.get(i);
+            SaxionApp.drawText((i + 1) + ". " + speler.name + " - " + speler.score, 350, 150 + (i * 35), 30); // Weergeving
+        }
+
+        for (Button button : buttonsLeaderBordScreen) { // Zodat de back to menu button er is
             button.drawButton();
         }
-        SaxionApp.drawText("   Leaderboard", 300, 30, 30);
     }
 }
-
