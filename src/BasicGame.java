@@ -26,6 +26,7 @@ public class BasicGame implements GameLoop {
     ArrayList<String> woordenlijstNormal = new ArrayList<>();
     ArrayList<String> woordenlijstHard = new ArrayList<>();
     ArrayList<Button> buttonsStartScreen = new ArrayList<>();
+    ArrayList<Button> buttonsLeaderBordScreen = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Character> geradenLetters = new ArrayList<>();
     ArrayList<Character> goedGeradenLetters = new ArrayList<>();
@@ -70,6 +71,7 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (height / 2) - 45, 60));
         buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (height / 2) + 15, height - 90, (height / 2) - 45, 60));
         buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
+        buttonsLeaderBordScreen.add(new Button("Back to menu", "Back to menu", 20, 20, 280, 80));
     }
 
     @Override
@@ -89,6 +91,7 @@ public class BasicGame implements GameLoop {
                 drawEndScreen();
                 break;
             case LEADERBOARDSCREEN:
+                drawLeaderBoardScreen();
                 break;
             default:
                 break;
@@ -141,6 +144,7 @@ public class BasicGame implements GameLoop {
                     }
                     break;
                 case LEADERBOARDSCREEN:
+
                     break;
                 default:
                     break;
@@ -162,6 +166,7 @@ public class BasicGame implements GameLoop {
                 case ENDSCREEN:
                     break;
                 case LEADERBOARDSCREEN:
+                    buttonEvent(buttonsLeaderBordScreen);
                     break;
                 default:
                     break;
@@ -225,7 +230,11 @@ public class BasicGame implements GameLoop {
                         break;
                     case "LEADERBOARD":
                         currentScreen = LEADERBOARDSCREEN;
+                        buttonEvent(buttonsLeaderBordScreen);
                         break;
+                    case "Back to menu":
+                        currentScreen = STARTSCREEN;
+
                     default:
                         break;
                 }
@@ -477,9 +486,16 @@ public class BasicGame implements GameLoop {
             for (Player speler : gesoorteerdeSpelers) {
                 fw.write(speler.name + "," + speler.score + "\n");  // Schrijft de naam en speler met een komma ertussen, \n begint een nieuwe regel
             }
-        }
-        catch(IOException e) {      // Pakt fouten op
-                SaxionApp.printLine("Niet gelukt");
+        } catch (IOException e) {      // Pakt fouten op
+            SaxionApp.printLine("Niet gelukt");
         }
     }
+
+    public void drawLeaderBoardScreen() {
+        for (Button button : buttonsLeaderBordScreen) {
+            button.drawButton();
+        }
+        SaxionApp.drawText("   Leaderboard", 300, 30, 30);
+    }
 }
+
