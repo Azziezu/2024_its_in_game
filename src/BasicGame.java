@@ -36,10 +36,10 @@ public class BasicGame implements GameLoop {
     Player player2;
     boolean tweeSpelers = false;
 
-    String CSVFile = "BasicGame/resources/FranseWoorden.csv";
+    String CSVFile = "resources/FranseWoorden.csv";
     CsvReader reader = new CsvReader(CSVFile);
 
-    String CSVscore = "BasicGame/resources/score.csv";
+    String CSVscore = "resources/score.csv";
     CsvReader readerscore = new CsvReader(CSVscore);
 
     public static void main(String[] args) {
@@ -66,11 +66,11 @@ public class BasicGame implements GameLoop {
         buttonsStartScreen.add(new Button("NORMAL", "NORMAL", (height / 3) + 15, height - 180, height / 3 - 30, 60));
         buttonsStartScreen.add(new Button("HARD", "HARD", (height / 3 * 2) + 15, height - 180, height / 3 - 45, 60));
         buttonsStartScreen.add(new Button("START", "START", 30, height - 90, (height / 2) - 45, 60));
-        buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (height / 2) + 15, height - 90, (height / 2) - 45, 60));
-        buttonsStartScreen.add(new Button("SAVE EN SLUIT", "SAVE_AND_EXIT", 30, 500, (height / 2) - 45, 60));
-
         // Knop voor het leaderboard-scherm
-        buttonsLeaderBordScreen.add(new Button("Back to menu", "Back to menu", 20, 20, 280, 80));
+        buttonsStartScreen.add(new Button("LEADERBOARD", "LEADERBOARD", (height / 2) + 15, height - 90, (height / 2) - 45, 60));
+        //buttonsStartScreen.add(new Button("SAVE", "SAVE", 550, 30, height / 3 - 45, 60));
+        buttonsStartScreen.add(new Button("SAVE_AND_EXIT", "SAVE_AND_EXIT", 30, 400, (height / 2) - 45, 60));
+        buttonsLeaderBordScreen.add(new Button("Back", "Back to menu", 10, 20, 160, 60));
     }
 
     @Override
@@ -136,6 +136,7 @@ public class BasicGame implements GameLoop {
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
                     }
+
                     break;
 
                 case ENDSCREEN:
@@ -179,7 +180,7 @@ public class BasicGame implements GameLoop {
     public void buttonEvent(ArrayList<Button> buttons) {
         for (Button button : buttons) {
             if (isValidButtonClick(button)) {
-                SaxionApp.playSound("BasicGame/resources/Mouse Click.wav");
+                SaxionApp.playSound("resources/Mouse Click.wav");
                 switch (button.action) {
                     case "1PLAYER":
                         if (tweeSpelers) {
@@ -192,7 +193,6 @@ public class BasicGame implements GameLoop {
                             }
                         }
                         break;
-
                     case "2PLAYER":
                         if (!tweeSpelers) {
                             tweeSpelers = true;
@@ -208,23 +208,18 @@ public class BasicGame implements GameLoop {
                     case "EDITP1":
                         editPlayerName(1);
                         break;
-
                     case "EDITP2":
                         editPlayerName(2);
                         break;
-
                     case "EASY":
                         difficulty = EASY;
                         break;
-
                     case "NORMAL":
                         difficulty = NORMAL;
                         break;
-
                     case "HARD":
                         difficulty = HARD;
                         break;
-
                     case "START":
                         raadwoord = kiesRandomWoord();
                         if (tweeSpelers) {
@@ -264,7 +259,7 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawStartScreen() {
-        SaxionApp.drawImage("BasicGame/resources/bestorming.png", 0, 0, 800, 800);
+        SaxionApp.drawImage("resources/bestorming.png", 0, 0, 800, 800);
         SaxionApp.drawText("Laat het hoofd niet rollen!", 30, 30, 24);
         SaxionApp.drawText("Druk op START om het spel te starten", 30, 60, 24);
         SaxionApp.drawText("Score: " + players.get(0).score, 30, 100, 24);
@@ -277,17 +272,18 @@ public class BasicGame implements GameLoop {
     }
 
     public void drawGameScreen() {
-        SaxionApp.drawImage("BasicGame/resources/opstand.jpg", 0, 0, 800, 800);
+        SaxionApp.drawImage("resources/opstand.jpg", 0, 0, 800, 800);
         if (gameWon()) {
-            SaxionApp.drawImage("BasicGame/resources/Franchflagg.jpg", 0, 0, 800, 900);
+            SaxionApp.drawImage("resources/Franchflagg.jpg", 0, 0, 800, 900);
         } else if (gameLost()) {
-            SaxionApp.drawImage("BasicGame/resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
-            SaxionApp.drawImage("BasicGame/resources/doodcapybarra.png", 340, 470, 230, 180);
-            SaxionApp.drawImage("BasicGame/resources/mes.png", 76, 58, 850, 800);
+            SaxionApp.drawImage("resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
+            SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 230, 180);
+            SaxionApp.drawImage("resources/mes.png", 76, 58, 850, 800);
+
         } else {
-            SaxionApp.drawImage("BasicGame/resources/Guillotine.png", 100, -100, 800, 800);
-            SaxionApp.drawImage("BasicGame/resources/Capybarahoofd.png", 50, 80, 850, 775);
-            SaxionApp.drawImage("BasicGame/resources/mes.png", 101, vallendeMes, 798, 600);
+            SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
+            SaxionApp.drawImage("resources/Capybarahoofd.png", 50, 80, 850, 775);
+            SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 798, 600);
         }
 
         SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24);
@@ -334,6 +330,7 @@ public class BasicGame implements GameLoop {
                 letter = Character.toLowerCase(letter);
             }
             player.name = player.name + letter;
+
         }
     }
 
@@ -464,7 +461,7 @@ public class BasicGame implements GameLoop {
     }
 
     // Het inladen en inlezen van alles uit het csv bestand
-    public ArrayList<Player> ladenScores(){
+    public ArrayList<Player> ladenScores() {
         ArrayList<Player> scoreLijst = new ArrayList<>();
 
         readerscore = new CsvReader(CSVscore);
@@ -505,7 +502,7 @@ public class BasicGame implements GameLoop {
             alleScores.add(players.get(0));
             // Zet de scores weer gesorteerd terug
             sorteerScoreEnSlaOp(alleScores);
-        } catch(Exception e) {
+        } catch (Exception e) {
             SaxionApp.printLine("Kan niet opslaan");
         }
     }
@@ -524,11 +521,21 @@ public class BasicGame implements GameLoop {
         scoreLijst.sort((p1, p2) -> p2.score - p1.score);
 
         SaxionApp.clear();
+        SaxionApp.drawImage("resources/Fightingmen.jpg", -40, -5, 860, 800);
         SaxionApp.drawText("Top 5 scores!", 350, 60, 40);
 
         // Math.min vergelijkt twee waarden en geeft de kleinste van de twee terug.
         // Dus als scoreLijst.size() groter is dan 5, dan krijgen we hier 5 terug.
         int aantalScores = Math.min(scoreLijst.size(), 5);
+        // Bepaald aantal scores dat laten zien moet wordne
+
+        if (scoreLijst.size() < 5) {
+            aantalScores = scoreLijst.size();
+        } else {
+            aantalScores = 5;
+        }
+
+        // Loopt door de lijst heen en laat scores op het scherm zien
         for (int i = 0; i < aantalScores; i++) {
             Player speler = scoreLijst.get(i);
             // Laat de ranking, naam en score zien. i + 1 zodat hij niet de header meepakt
