@@ -5,6 +5,7 @@ import nl.saxion.app.interaction.GameLoop;
 import nl.saxion.app.interaction.KeyboardEvent;
 import nl.saxion.app.interaction.MouseEvent;
 
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -513,7 +514,6 @@ public class BasicGame implements GameLoop {
         sorteerScoreEnSlaOp(scoreLijst);
     }
 
-
     public void toonTop5Scores() {
         // Lijst om spelers in op te slaan
         ArrayList<Player> scoreLijst = ladenScores();
@@ -522,22 +522,16 @@ public class BasicGame implements GameLoop {
 
         SaxionApp.clear();
         SaxionApp.drawImage("resources/Fightingmen.jpg", -40, -5, 860, 800);
+        SaxionApp.drawRectangle(315, 30, 300, 350);
+        SaxionApp.setTextDrawingColor(Color.red);
         SaxionApp.drawText("Top 5 scores!", 350, 60, 40);
 
         // Math.min vergelijkt twee waarden en geeft de kleinste van de twee terug.
         // Dus als scoreLijst.size() groter is dan 5, dan krijgen we hier 5 terug.
         int aantalScores = Math.min(scoreLijst.size(), 5);
-        // Bepaald aantal scores dat laten zien moet wordne
-
-        if (scoreLijst.size() < 5) {
-            aantalScores = scoreLijst.size();
-        } else {
-            aantalScores = 5;
-        }
-
-        // Loopt door de lijst heen en laat scores op het scherm zien
         for (int i = 0; i < aantalScores; i++) {
             Player speler = scoreLijst.get(i);
+            SaxionApp.setTextDrawingColor(Color.white);
             // Laat de ranking, naam en score zien. i + 1 zodat hij niet de header meepakt
             SaxionApp.drawText((i + 1) + ". " + speler.name + " - " + speler.score, 350, 150 + (i * 35), 30);
         }
