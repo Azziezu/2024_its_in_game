@@ -144,7 +144,6 @@ public class BasicGame implements GameLoop {
                         resetGame();
                     }
                     break;
-
                 case LEADERBOARDSCREEN:
                     // Geen speciale keyboard-events hier, tenzij je er iets mee wilt doen
                     break;
