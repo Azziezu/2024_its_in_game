@@ -234,7 +234,7 @@ public class BasicGame implements GameLoop {
                         currentScreen = GAMESCREEN;
                         break;
 
-                    case "SAVE_AND_EXIT": // Handle the SAVE button
+                    case "SAVE_AND_EXIT": // Save knop
                         savenPlayerScore();
                         sorterenScore();
                         toonBericht("Score is opgeslagen! Spel sluit nu.");
@@ -363,28 +363,38 @@ public class BasicGame implements GameLoop {
     }
 
     public void registreerIngevoerdeLetters(char ingevoerdeLetter) {
+        // Als ingevoerde letter een letter is dan
         if (Character.isLetter(ingevoerdeLetter)) {
+            // Zorgt ervoor dat ingevoerde letter niet case sensitive is en altijd wordt herkend
             ingevoerdeLetter = Character.toLowerCase(ingevoerdeLetter);
+
+            // Checkt of geraden letter al eerder geraden is met contains
             if (geradenLetters.contains(ingevoerdeLetter)) {
                 toonBericht("Je hebt de letter " + ingevoerdeLetter + " al geraden!");
             } else {
-                geradenLetters.add(ingevoerdeLetter);
+                geradenLetters.add(ingevoerdeLetter); // Voeg de letter toe aan de lijst
+
+                // Veranderd char in string omdat contains alleen string herkend
                 if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
-                    toonBericht("Letter " + ingevoerdeLetter + " is correct!");
+                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
                     goedGeradenLetters.add(ingevoerdeLetter);
                 } else {
-                    toonBericht("Letter " + ingevoerdeLetter + " is fout!");
+                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
+                    // de mes valt 50 pixels naar beneden
                     vallendeMes += 300 / raadwoord.length() + 1;
-                    SaxionApp.playSound("BasicGame/resources/Knife_attack-2.wav");
+                    SaxionApp.playSound("resources/Knife_attack-2.wav");
+                    // de mes mag niet lager zijn dan 195
                     if (vallendeMes > 195) {
+                        // De mes blijft op de postie 195
                         vallendeMes = 195;
-                        SaxionApp.playSound("BasicGame/resources/Thump-Body-Hit_TTX042901-2.wav");
+                        SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
                     }
                 }
             }
         } else {
-            toonBericht("Voer alleen letters in.");
+            // Kan alleen een letter invoeren, geen andere tekens of cijfers
+            toonBericht("Voer alstublieft alleen een letter in.");
         }
     }
 
