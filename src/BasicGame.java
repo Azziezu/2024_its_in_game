@@ -19,8 +19,8 @@ public class BasicGame implements GameLoop {
     static final int NORMAL = 2;
     static final int HARD = 3;
 
-    int mouseX, mouseY, width, height, currentScreen, difficulty;
-    int vallendeMes = -105;
+    int mouseX, mouseY, width, height, currentScreen, difficulty, maxGuesses;
+    int vallendeMes = -72;
     String raadwoord;
     ArrayList<String> woordenlijstEasy = new ArrayList<>();
     ArrayList<String> woordenlijstNormal = new ArrayList<>();
@@ -52,6 +52,7 @@ public class BasicGame implements GameLoop {
         raadwoord = "Capybara";
         currentScreen = STARTSCREEN;
         difficulty = NORMAL;
+        maxGuesses = 8;
         width = SaxionApp.getWidth();
         height = SaxionApp.getHeight();
         csvReader();
@@ -214,12 +215,15 @@ public class BasicGame implements GameLoop {
                         break;
                     case "EASY":
                         difficulty = EASY;
+                        maxGuesses = 10;
                         break;
                     case "NORMAL":
                         difficulty = NORMAL;
+                        maxGuesses = 8;
                         break;
                     case "HARD":
                         difficulty = HARD;
+                        maxGuesses = 6;
                         break;
                     case "START":
                         raadwoord = kiesRandomWoord();
@@ -279,16 +283,15 @@ public class BasicGame implements GameLoop {
         } else if (gameLost()) {
             SaxionApp.drawImage("resources/Bloeddigeguillitine.png", 160, 60, 700, 700);
             SaxionApp.drawImage("resources/doodcapybarra.png", 340, 470, 230, 180);
-            SaxionApp.drawImage("resources/mes.png", 76, 58, 850, 800);
-
+            SaxionApp.drawImage("resources/mes.png", 76, 130, 850, 800);
         } else {
             SaxionApp.drawImage("resources/Guillotine.png", 100, -100, 800, 800);
             SaxionApp.drawImage("resources/Capybarahoofd.png", 50, 80, 850, 775);
             SaxionApp.drawImage("resources/mes.png", 101, vallendeMes, 798, 600);
+            SaxionApp.drawText("Voer een letter in: ", 30, height - 100, 24);
+            SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24);
+            SaxionApp.drawText("Aantal fouten: " + foutGeradenLetters.size() + " / " + maxGuesses, 30, 140, 24);
         }
-
-        SaxionApp.drawText("Voer een letter in: ", 30, height - 160, 24);
-        SaxionApp.drawText("Geraden letters: " + geradenLetters, 30, 100, 24);
 
         drawRaadWoord();
         for (int i = 0; i < players.size(); i++) {
@@ -317,9 +320,9 @@ public class BasicGame implements GameLoop {
         for (int i = 0; i < raadwoord.length(); i++) {
             int spacing = (height - 200) / raadwoord.length();
             if (goedGeradenLetters.contains(raadwoord.toLowerCase().charAt(i))) {
-                SaxionApp.drawText("" + raadwoord.charAt(i), 100 + (spacing * i), height - 100, 24);
+                SaxionApp.drawText("" + raadwoord.charAt(i), 100 + (spacing * i), height - 50, 24);
             } else {
-                SaxionApp.drawText("_", 100 + (spacing * i), height - 100, 24);
+                SaxionApp.drawText("_", 100 + (spacing * i), height - 50, 24);
             }
         }
     }
@@ -373,16 +376,16 @@ public class BasicGame implements GameLoop {
 
                 // Veranderd char in string omdat contains alleen string herkend
                 if (raadwoord.toLowerCase().contains(String.valueOf(ingevoerdeLetter))) {
-                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , goed geraden!");
+                    toonBericht("[" + ingevoerdeLetter + "] is goed, goed geraden!");
                     goedGeradenLetters.add(ingevoerdeLetter);
                 } else {
-                    toonBericht("Letter wat je hebt ingevoerd is " + ingevoerdeLetter + " , dit is helaas fout!");
+                    toonBericht("[" + ingevoerdeLetter + "] is helaas fout!");
                     foutGeradenLetters.add(ingevoerdeLetter);
                     // de mes valt 50 pixels naar beneden
-                    vallendeMes += 300 / raadwoord.length() + 1;
+                    vallendeMes += 270 / maxGuesses + 1;
                     SaxionApp.playSound("resources/Knife_attack-2.wav");
                     // de mes mag niet lager zijn dan 195
-                    if (vallendeMes > 195) {
+                    if (foutGeradenLetters.size() >= maxGuesses) {
                         // De mes blijft op de postie 195
                         vallendeMes = 195;
                         SaxionApp.playSound("resources/Thump-Body-Hit_TTX042901-2.wav");
@@ -396,7 +399,7 @@ public class BasicGame implements GameLoop {
     }
 
     public boolean gameLost() {
-        return foutGeradenLetters.size() == raadwoord.length();
+        return foutGeradenLetters.size() >= maxGuesses;
     }
 
     public boolean gameWon() {
