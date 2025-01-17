@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class BasicGame implements GameLoop {
     static final int STARTSCREEN = 1;
     static final int GAMESCREEN = 2;
-    static final int ENDSCREEN = 3;
     static final int LEADERBOARDSCREEN = 4;
     static final int EASY = 1;
     static final int NORMAL = 2;
@@ -85,12 +84,6 @@ public class BasicGame implements GameLoop {
             case GAMESCREEN:
                 drawGameScreen();
                 break;
-            case ENDSCREEN:
-                if (tweeSpelers) {
-                    SaxionApp.resize(SaxionApp.getWidth() / 2, SaxionApp.getHeight());
-                }
-                drawEndScreen();
-                break;
             case LEADERBOARDSCREEN:
                 toonTop5Scores();
                 break;
@@ -132,20 +125,14 @@ public class BasicGame implements GameLoop {
                 case GAMESCREEN:
                     if (gameLost() || gameWon()) {
                         if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
-                            currentScreen = ENDSCREEN;
+                            currentScreen = STARTSCREEN;
                             scoreSysteem();
+                            resetGame();
                         }
                     } else {
                         registreerIngevoerdeLetters((char) keyboardEvent.getKeyCode());
                     }
 
-                    break;
-
-                case ENDSCREEN:
-                    if (keyboardEvent.getKeyCode() == KeyboardEvent.VK_SPACE) {
-                        currentScreen = STARTSCREEN;
-                        resetGame();
-                    }
                     break;
                 case LEADERBOARDSCREEN:
                     // Geen speciale keyboard-events hier, tenzij je er iets mee wilt doen
@@ -167,8 +154,6 @@ public class BasicGame implements GameLoop {
                     buttonEvent(buttonsStartScreen);
                     break;
                 case GAMESCREEN:
-                    break;
-                case ENDSCREEN:
                     break;
                 case LEADERBOARDSCREEN:
                     buttonEvent(buttonsLeaderBordScreen);
@@ -300,20 +285,11 @@ public class BasicGame implements GameLoop {
         }
         if (gameWon()) {
             SaxionApp.drawText("Je hebt gewonnen!", 30, 300, 24);
-            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
+            SaxionApp.drawText("Druk op spatie om terug te gaan", 30, 330, 24);
         } else if (gameLost()) {
             SaxionApp.drawText("Je hebt verloren...", 30, 300, 24);
-            SaxionApp.drawText("Druk op spatie om door te gaan", 30, 330, 24);
+            SaxionApp.drawText("Druk op spatie om terug te gaan", 30, 330, 24);
         }
-    }
-
-    public void drawEndScreen() {
-        for (int i = 0; i < players.size(); i++) {
-            SaxionApp.drawText("Speler: " + players.get(i).name, 30 + (height * i), 20, 24);
-            SaxionApp.drawText("Je score: " + players.get(i).score, 30 + (height * i), 50, 24);
-        }
-        SaxionApp.drawText("Spel voorbij!", 30, 80, 24);
-        SaxionApp.drawText("Druk op spatie om opnieuw te spelen.", 30, 120, 24);
     }
 
     public void drawRaadWoord() {
